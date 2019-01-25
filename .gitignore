@@ -1,0 +1,17 @@
+# .gitignore
+[Pp]lugins/android.json
+[Pp]lugins/windows.json
+[Pp]lugins/wp8.json
+[Pp]lugins/remote_ios.json
+/[Pp]latforms/
+/bin
+/bld
+/platforms
+/plugins
+/node_modules
+/.git
+/.vs
+/www/*
+package-lock.json
+vue-cordova.jsproj.user
+stats.json
