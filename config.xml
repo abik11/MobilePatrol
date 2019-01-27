@@ -38,4 +38,5 @@
     <splash src="res/icon-logo.png" density="port-xhdpi" />
   </platform>
   <preference name="Orientation" value="portrait" />
+  <plugin name="cordova-sms-plugin" spec="~1.0.0" />
 </widget>

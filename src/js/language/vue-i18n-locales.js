@@ -1,7 +1,8 @@
 ﻿var Locale = {
    pl: {
       common: {
-         hello_world: 'Witaj świecie!'
+         task_done_question: 'Jesteś pewien, że wykonałeś to zadanie?',
+         task_done: 'Zadanie wykonane'
       }
    }
 }

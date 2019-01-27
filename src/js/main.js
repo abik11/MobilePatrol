@@ -1,6 +1,7 @@
 ﻿require('es6-promise').polyfill();
 import Polyfill from './core/es6-polyfill.js';
 import Vue from 'vue';
+import VueCordova from './device/vue-cordova.js';
 import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
 import Locale from './language/vue-i18n-locales.js';
@@ -18,6 +19,7 @@ import Home from './components/home.vue';
       document.addEventListener('resume', onResume.bind(this), false);
 
       Polyfill.objectAssign();
+      Vue.use(VueCordova);
       Vue.use(VueRouter);
       Vue.use(VueI18n);
 
