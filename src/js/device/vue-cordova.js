@@ -15,15 +15,15 @@ VueCordova.install = function (Vue, options) {
       //   resultDisplayDuration: 500,
       //   formats: "QR_CODE,DATA_MATRIX,CODE_128,CODE_39,CODE_93,UPC_E,UPC_A,EAN_8,EAN_13"
       //},
-      //cameraConfig: {
-      //   quality: 50,
-      //   targetWidth: 800,
-      //   targetHeight: 600,
-      //   encoding: imageMimeType == 'image/jpeg' ? Camera.EncodingType.JPEG : Camera.EncodingType.PNG,
-      //   correctOrientation: true,
-      //   saveToPhotoAlbum: false,
-      //   destinationType: Camera.DestinationType.FILE_URI
-      //},
+      cameraConfig: {
+         quality: 50,
+         targetWidth: 800,
+         targetHeight: 600,
+         encoding: imageMimeType == 'image/jpeg' ? Camera.EncodingType.JPEG : Camera.EncodingType.PNG,
+         correctOrientation: true,
+         saveToPhotoAlbum: false,
+         destinationType: Camera.DestinationType.FILE_URI
+      },
       smsConfig: {
          replaceLineBreaks: false,
          android: { intent: '' }
@@ -53,30 +53,30 @@ VueCordova.install = function (Vue, options) {
          sms.send(number, message, options, success, error);
       },
 
-      //sendMms(number, message, image, success, error, method) {
-      //   if (typeof (error) === undefined)
-      //      error = defaults.defaultErrorHandler;
-      //   if (typeof (method) === undefined)
-      //      method = '';
+      sendMms(number, message, image, success, error, method) {
+         if (typeof (error) === undefined)
+            error = defaults.defaultErrorHandler;
+         if (typeof (method) === undefined)
+            method = '';
 
-      //   var convertPhoneToArray = function (phone) {
-      //      if (typeof phone === 'string' && phone.indexOf(',') !== -1) {
-      //         phone = phone.split(',');
-      //      }
-      //      if (Object.prototype.toString.call(phone) !== '[object Array]') {
-      //         phone = [phone];
-      //      }
-      //      return phone;
-      //   }
+         var convertPhoneToArray = function (phone) {
+            if (typeof phone === 'string' && phone.indexOf(',') !== -1) {
+               phone = phone.split(',');
+            }
+            if (Object.prototype.toString.call(phone) !== '[object Array]') {
+               phone = [phone];
+            }
+            return phone;
+         }
 
-      //   cordova.exec(
-      //      success,
-      //      error,
-      //      'mms',
-      //      'send',
-      //      [convertPhoneToArray(number), message, image, method]
-      //   );
-      //},
+         cordova.exec(
+            success,
+            error,
+            'mms',
+            'send',
+            [convertPhoneToArray(number), message, image, method]
+         );
+      },
 
       //getBarcodeScannerConfig() {
       //   return defaults.barcodeScannerConfig;
@@ -90,32 +90,28 @@ VueCordova.install = function (Vue, options) {
       //   cordova.plugins.barcodeScanner.scan(success, error, options);
       //},
 
-      //getCameraConfig() {
-      //   return defaults.cameraConfig;
-      //},
+      getCameraConfig() {
+         return defaults.cameraConfig;
+      },
 
-      //getPicture(success, error, options) {
-      //   if (typeof (error) === undefined)
-      //      error = defaults.defaultErrorHandler;
-      //   if (typeof (options) === undefined)
-      //      options = defaults.cameraConfig;
-      //   navigator.camera.getPicture(success, error, options);
-      //},
+      getPicture(success, error, options) {
+         if (typeof (error) === undefined)
+            error = defaults.defaultErrorHandler;
+         if (typeof (options) === undefined)
+            options = defaults.cameraConfig;
+         navigator.camera.getPicture(success, error, options);
+      },
 
-      //readFile(fileName, onFileLoaded, onFileError) {
-      //   window.resolveLocalFileSystemURL(fileName, function (fileEntry) {
-      //      fileEntry.file(function (file) {
-      //         var reader = new FileReader();
-      //         //Attach onLoadEnd event handler for FileReader
-      //         reader.onloadend = onFileLoaded;
-      //         reader.onerror = onFileError;
-      //         //Execute read action - will cause onLoadEnd event
-      //         reader.readAsBinaryString(file);
-      //         //Binary String can be encoded with base64 (btoa javascript function)
-      //         //Such base64 string can be send as JSON via HTTP to WCF for example
-      //      }, onFileError);
-      //   }, defaults.defaultErrorHandler);
-      //},
+      readFile(fileName, onFileLoaded, onFileError) {
+         window.resolveLocalFileSystemURL(fileName, function (fileEntry) {
+            fileEntry.file(function (file) {
+               var reader = new FileReader();
+               reader.onloadend = onFileLoaded;
+               reader.onerror = onFileError;
+               reader.readAsBinaryString(file);
+            }, onFileError);
+         }, defaults.defaultErrorHandler);
+      },
 
       imageMimeType: imageMimeType
    };

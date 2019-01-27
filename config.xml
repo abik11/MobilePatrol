@@ -39,4 +39,7 @@
   </platform>
   <preference name="Orientation" value="portrait" />
   <plugin name="cordova-sms-plugin" spec="~1.0.0" />
+  <plugin name="cordova-plugin-camera" spec="~2.4.1" />
+  <plugin name="cordova-plugin-file" spec="~4.3.3" />
+  <plugin name="org.apache.cordova.plugin.mms" spec="~1.0.0" src="https://github.com/pyxweb/cordova-plugin-mms.git" />
 </widget>

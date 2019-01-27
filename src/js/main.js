@@ -8,6 +8,8 @@ import Locale from './language/vue-i18n-locales.js';
 import '../css/main.scss';
 //---
 import Home from './components/home.vue';
+import Instruction from './components/instruction.vue';
+import Issue from './components/issue.vue';
 
 (function () {
    "use strict";
@@ -26,7 +28,9 @@ import Home from './components/home.vue';
       const router = new VueRouter({
          base: __dirname,
          routes: [
-            { path: '/', component: Home }
+            { path: '/', component: Home },
+            { path: '/instruction', component: Instruction },
+            { path: '/issue', component: Issue }
          ]
       });
 
