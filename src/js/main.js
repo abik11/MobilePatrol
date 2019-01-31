@@ -1,4 +1,5 @@
-﻿require('es6-promise').polyfill();
+﻿require.context("../img/", true, /\.(jpe?g|png|gif|svg)$/i);
+require('es6-promise').polyfill();
 import Polyfill from './core/es6-polyfill.js';
 import Vue from 'vue';
 import VueCordova from './device/vue-cordova.js';

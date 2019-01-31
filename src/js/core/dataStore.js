@@ -9,6 +9,8 @@
          { name: 'Sprwadź punkt numer 3', time: '18:10:00' }
       ],
       reportNumber: '797026001',
-      currentUser: 'Albert Kozak'
+      currentUser: 'Albert Kozak',
+      bgTaskActive: false,
+      bgTaskHandler: null
    }
 }

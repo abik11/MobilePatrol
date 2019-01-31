@@ -5,7 +5,7 @@
             <li v-for="task in sharedData.tasks" @click="taskDone(task)">{{task.name}} | {{task.time}}</li>
          </ul>
          <hr />
-         <p><router-link to="/instructions">{{$t('task_list.read_instructions')}}</router-link></p>
+         <p><router-link to="/instruction">{{$t('task_list.read_instructions')}}</router-link></p>
          <p><router-link to="/issue">{{$t('task_list.raport_issue')}}</router-link></p>
          <p><a href="#" @click="panic">{{$t('task_list.panic')}}</a></p>
       </div>
@@ -60,7 +60,30 @@
          },
          onMessageSent() {
             console.log("SMS has been sent");
+         },
+         startBgAction() {
+            this.sharedData.bgTaskHandler = setInterval(() => {
+               console.log('Executing interval');
+               //here checking tasks will be done
+            }, /*5 **/ 60000);
+            this.sharedData.bgTaskActive = true;
+            console.log('Background task has started.');
+         },
+         endBgAction() {
+            clearInterval(this.sharedData.taskHandler);
+            cordova.plugins.backgroundMode.un('enable', this.startBgAction);
+            cordova.plugins.backgroundMode.un('disable', this.endBgAction);
+            this.sharedData.bgTaskActive = false;
+            console.log('Background task has stopped.');
          }
+      },
+      mounted() {
+         cordova.plugins.backgroundMode.enable();
+         cordova.plugins.backgroundMode.on('enable', this.startBgAction);
+         cordova.plugins.backgroundMode.on('disable', this.endBgAction);
+      },
+      beforeDestroy() {
+         this.endBgAction();
       }
    }
 </script>
