@@ -1,11 +1,12 @@
-﻿var path = require('path');
+/// <binding BeforeBuild='Run - Production' />
+var path = require('path');
 var webpack = require('webpack');
 var glob = require('glob-all');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var WebpackNotifierPlugin = require('webpack-notifier');
-var PurifyCSSPlugin = require('purifycss-webpack');
+//var PurifyCSSPlugin = require('purifycss-webpack');
 
 module.exports = {
    entry: {
@@ -40,7 +41,11 @@ module.exports = {
             test: /\.scss$/,
             use: ExtractTextPlugin.extract({
                fallback: 'style-loader',
-               loader: ['css-loader', 'resolve-url-loader', 'sass-loader']
+               use: [
+                  { loader: 'css-loader', options: { minimize: true } },
+                  'resolve-url-loader',
+                  'sass-loader'
+               ]
             })
          },
          {
@@ -76,12 +81,12 @@ module.exports = {
       new ExtractTextPlugin({
          filename: './css/style.css'
       }),
-      new PurifyCSSPlugin({
-         paths: glob.sync([
-            path.join(__dirname, 'src/*.html'),
-            path.join(__dirname, 'src/js/*.vue')
-         ])
-      }),
+      //new PurifyCSSPlugin({
+      //   paths: glob.sync([
+      //      path.join(__dirname, 'src/*.html'),
+      //      path.join(__dirname, 'src/js/*.vue')
+      //   ])
+      //}),
       new HtmlWebpackPlugin({
          template: 'src/index.html',
          minify: {

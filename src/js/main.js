@@ -2,6 +2,7 @@
 require('es6-promise').polyfill();
 import Polyfill from './core/es6-polyfill.js';
 import Vue from 'vue';
+import Vuetify from 'vuetify';
 import VueCordova from './device/vue-cordova.js';
 import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
@@ -22,6 +23,7 @@ import Issue from './components/issue.vue';
       document.addEventListener('resume', onResume.bind(this), false);
 
       Polyfill.objectAssign();
+      Vue.use(Vuetify, { iconfont: 'mdi' });
       Vue.use(VueCordova);
       Vue.use(VueRouter);
       Vue.use(VueI18n);
