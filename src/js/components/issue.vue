@@ -1,15 +1,13 @@
 ﻿<template>
-   <transition appear name="custom-classes-transition" enter-active-class="animated fadeIn">
-      <div>
-         <button @click="captureImage">{{$t('issue.make_picture')}}</button>
+   <div>
+      <button @click="captureImage">{{$t('issue.make_picture')}}</button>
+      <br />
+      <div v-if="imageUri.length != 0">
+         <img class="img" :src="imageUri" />
          <br />
-         <div v-if="imageUri.length != 0">
-            <img class="img" :src="imageUri" />
-            <br />
-            <button @click="sendImage">{{$t('common.send')}}</button>
-         </div>
+         <button @click="sendImage">{{$t('common.send')}}</button>
       </div>
-   </transition>
+   </div>
 </template>
 
 <script>

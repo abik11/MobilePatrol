@@ -1,28 +1,59 @@
 ﻿<template>
-   <transition appear name="custom-classes-transition" enter-active-class="animated fadeIn">
-      <div>
-         <ul>
-            <li v-for="task in sharedData.tasks" @click="taskDone(task)">{{task.name}} | {{task.time}}</li>
-         </ul>
-         <hr />
-         <p><router-link to="/instruction">{{$t('task_list.read_instructions')}}</router-link></p>
-         <p><router-link to="/issue">{{$t('task_list.raport_issue')}}</router-link></p>
-         <p><a href="#" @click="panic">{{$t('task_list.panic')}}</a></p>
-      </div>
-   </transition>
+   <v-layout row>
+      <login-box v-if="loggedIn" class="full" @login="onUserLoggedin" />
+      <v-layout v-else row>
+         <v-flex xs12 sm6 offset-sm3>
+            <v-list two-line>
+               <template v-for="(task, index) in sharedData.userTasks">
+                  <v-divider v-if="index > 0" :key="index"></v-divider>
+                  <v-list-tile :key="index">
+                     <v-list-tile-content>
+                        <strong><v-list-tile-title v-html="task.name"></v-list-tile-title></strong>
+                        <v-list-tile-sub-title v-html="task.time"></v-list-tile-sub-title>
+                     </v-list-tile-content>
+                     <v-spacer></v-spacer>
+                     <v-btn color="primary" outline fab @click="sendName">
+                        <v-icon>check</v-icon>
+                     </v-btn>
+                  </v-list-tile>
+               </template>
+            </v-list>
+         </v-flex>
+         <v-footer absolute height="auto">
+            <v-card flat tile color="secondary" style="width: 100%;">
+               <v-card-text>
+                  <v-btn color="primary" fab dark>
+                     <v-icon>menu</v-icon>
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <p class="grey--text text--darken-1">
+                     {{$t('task_list.logged_as')}}: {{sharedData.currentUser}}
+                  </p>
+               </v-card-text>
+            </v-card>
+         </v-footer>
+      </v-layout>
+   </v-layout>
 </template>
 
 <script>
    import DataStore from '../core/dataStore';
    import ErrorMixin from '../core/errorMixin';
+   import LoginBox from './loginBox.vue';
 
    export default {
       name: 'home',
+      components: { LoginBox },
       mixins: [ErrorMixin],
-      data: function () {
+      data() {
          return {
             error: '',
             sharedData: DataStore.state
+         }
+      },
+      computed: {
+         loggedIn() {
+            return this.sharedData.currentUser == '';
          }
       },
       methods: {
@@ -75,7 +106,14 @@
             cordova.plugins.backgroundMode.un('disable', this.endBgAction);
             this.sharedData.bgTaskActive = false;
             console.log('Background task has stopped.');
+         },
+         onUserLoggedin(userName) {
+            this.sharedData.currentUser = userName;
          }
+      },
+      created() {
+         this.sharedData.userTasks = this.sharedData.dailyTasks;
+         this.sharedData.reportNumber = '797026001';
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();
@@ -87,3 +125,13 @@
       }
    }
 </script>
+
+<style lang="scss" scoped>
+   .full {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+   }
+</style>
