@@ -21,15 +21,17 @@
          </v-flex>
          <v-footer absolute height="auto">
             <v-card flat tile color="secondary" style="width: 100%;">
-               <v-card-text>
-                  <v-btn color="primary" fab dark>
-                     <v-icon>menu</v-icon>
-                  </v-btn>
-                  <v-spacer></v-spacer>
-                  <p class="grey--text text--darken-1">
-                     {{$t('task_list.logged_as')}}: {{sharedData.currentUser}}
-                  </p>
-               </v-card-text>
+               <v-layout align-center justify-center fill-height>
+                  <v-flex xs3>
+                     <v-btn color="primary" fab dark>
+                        <v-icon>menu</v-icon>
+                     </v-btn>
+                  </v-flex>
+                  <v-flex xs9 pr-4 class="grey--text text--darken-1">
+                     <!-- here maybe using different tag than <p> would be a good idea -->
+                     <p class="text-xs-right">{{$t('task_list.logged_as')}}: {{sharedData.currentUser}}</p>
+                  </v-flex>
+               </v-layout>
             </v-card>
          </v-footer>
       </v-layout>

@@ -1,4 +1,4 @@
-/// <binding BeforeBuild='Run - Production' />
+/// <binding />
 var path = require('path');
 var webpack = require('webpack');
 var glob = require('glob-all');
