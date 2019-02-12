@@ -8,15 +8,17 @@
          hint: 'Na przykład: Jan Kowalski',
          login: 'Zaloguj'
       },
+      side_menu: {
+         panic: 'Zgłoszenie alarmu',
+         raport_issue: 'Zgłoś problem',
+         read_instructions: 'Przeczytaj instrukcje',
+         logout: 'Wyloguj'
+      },
       task_list: {
          task_done_question: 'Jesteś pewien, że wykonałeś to zadanie?',
          task_done: 'Zadanie wykonane',
-         panic_question: 'Jesteś pewien, że chcesz zgłosić alarm?',
-         panic: 'Zgłoszenie alarmu',
-         read_instructions: 'Przeczytaj instrukcje',
-         raport_issue: 'Zgłoś problem',
-         panic: 'Panic!',
-         logged_as: 'Zalogowany jako'
+         logged_as: 'Zalogowany jako',
+         panic_question: 'Jesteś pewien, że chcesz zgłosić alarm?'
       },
       issue: {
          make_picture: 'Zrób zdjęcie',

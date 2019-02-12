@@ -1,7 +1,8 @@
 ﻿<template>
    <v-layout row>
-      <login-box v-if="loggedIn" class="full" @login="onUserLoggedin" />
+      <login-box v-if="loggedIn" class="login-box full" @login="onUserLoggedin" />
       <v-layout v-else row>
+         <side-menu v-show="menuOn"></side-menu>
          <v-flex xs12 sm6 offset-sm3>
             <v-list two-line>
                <template v-for="(task, index) in sharedData.userTasks">
@@ -19,12 +20,15 @@
                </template>
             </v-list>
          </v-flex>
-         <v-footer absolute height="auto">
+         <v-footer absolute height="auto" class="put-on-top">
             <v-card flat tile color="secondary" style="width: 100%;">
                <v-layout align-center justify-center fill-height>
                   <v-flex xs3>
-                     <v-btn color="primary" fab dark>
+                     <v-btn v-if="!menuOn" color="primary" fab dark @click="menuOn = true">
                         <v-icon>menu</v-icon>
+                     </v-btn>
+                     <v-btn v-else color="primary" fab dark @click="menuOn = false">
+                        <v-icon>close</v-icon>
                      </v-btn>
                   </v-flex>
                   <v-flex xs9 pr-4 class="grey--text text--darken-1 text-xs-right">
@@ -41,13 +45,15 @@
    import DataStore from '../core/dataStore';
    import ErrorMixin from '../core/errorMixin';
    import LoginBox from './loginBox.vue';
+   import SideMenu from './sideMenu.vue';
 
    export default {
       name: 'home',
-      components: { LoginBox },
+      components: { LoginBox, SideMenu },
       mixins: [ErrorMixin],
       data() {
          return {
+            menuOn: false,
             error: '',
             sharedData: DataStore.state
          }
@@ -128,11 +134,13 @@
 </script>
 
 <style lang="scss" scoped>
-   .full {
+   .login-box {
       position: fixed;
       top: 0px;
       left: 0px;
-      width: 100%;
-      height: 100%;
+   }
+
+   .put-on-top {
+      z-index: 1001;
    }
 </style>
