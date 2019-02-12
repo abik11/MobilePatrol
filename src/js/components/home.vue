@@ -27,9 +27,8 @@
                         <v-icon>menu</v-icon>
                      </v-btn>
                   </v-flex>
-                  <v-flex xs9 pr-4 class="grey--text text--darken-1">
-                     <!-- here maybe using different tag than <p> would be a good idea -->
-                     <p class="text-xs-right">{{$t('task_list.logged_as')}}: {{sharedData.currentUser}}</p>
+                  <v-flex xs9 pr-4 class="grey--text text--darken-1 text-xs-right">
+                     {{$t('task_list.logged_as')}}: {{sharedData.currentUser}}
                   </v-flex>
                </v-layout>
             </v-card>
