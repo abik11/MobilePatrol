@@ -2,7 +2,49 @@
    <v-layout row>
       <login-box v-if="loggedIn" class="login-box full" @login="onUserLoggedin" />
       <v-layout v-else row>
-         <side-menu v-show="menuOn"></side-menu>
+         <v-navigation-drawer v-model="nav" absolute dark temporary width="220">
+            <v-list class="pt-0">
+
+               <v-list-tile>
+                  <v-list-tile-content>
+                     <v-list-tile-title style="text-decoration: line-through;">{{ $t('side_menu.panic') }}</v-list-tile-title>
+                  </v-list-tile-content>
+               </v-list-tile>
+               <v-divider></v-divider>
+
+               <router-link to="/issue">
+                  <v-list-tile>
+                     <v-list-tile-content>
+                        <v-list-tile-title>{{ $t('side_menu.raport_issue') }}</v-list-tile-title>
+                     </v-list-tile-content>
+                  </v-list-tile>
+               </router-link>
+               <v-divider></v-divider>
+
+               <router-link to="/instruction">
+                  <v-list-tile>
+                     <v-list-tile-content>
+                        <v-list-tile-title>{{ $t('side_menu.read_instructions') }}</v-list-tile-title>
+                     </v-list-tile-content>
+                  </v-list-tile>
+               </router-link>
+               <v-divider></v-divider>
+
+               <v-list-tile>
+                  <v-list-tile-content>
+                     <v-list-tile-title style="text-decoration: line-through;">{{ $t('side_menu.settings') }}</v-list-tile-title>
+                  </v-list-tile-content>
+               </v-list-tile>
+               <v-divider></v-divider>
+
+               <v-list-tile @click="sharedData.currentUser = ''">
+                  <v-list-tile-content>
+                     <v-list-tile-title>{{ $t('side_menu.logout') }}</v-list-tile-title>
+                  </v-list-tile-content>
+               </v-list-tile>
+
+            </v-list>
+         </v-navigation-drawer>
          <v-flex xs12 sm6 offset-sm3>
             <v-list two-line>
                <template v-for="(task, index) in sharedData.userTasks">
@@ -24,11 +66,8 @@
             <v-card flat tile color="secondary" style="width: 100%;">
                <v-layout align-center justify-center fill-height>
                   <v-flex xs3>
-                     <v-btn v-if="!menuOn" color="primary" fab dark @click="menuOn = true">
+                     <v-btn color="primary" fab dark @click.stop="nav = !nav">
                         <v-icon>menu</v-icon>
-                     </v-btn>
-                     <v-btn v-else color="primary" fab dark @click="menuOn = false">
-                        <v-icon>close</v-icon>
                      </v-btn>
                   </v-flex>
                   <v-flex xs9 pr-4 class="grey--text text--darken-1 text-xs-right">
@@ -45,15 +84,14 @@
    import DataStore from '../core/dataStore';
    import ErrorMixin from '../core/errorMixin';
    import LoginBox from './loginBox.vue';
-   import SideMenu from './sideMenu.vue';
 
    export default {
       name: 'home',
-      components: { LoginBox, SideMenu },
+      components: { LoginBox },
       mixins: [ErrorMixin],
       data() {
          return {
-            menuOn: false,
+            nav: null,
             error: '',
             sharedData: DataStore.state
          }
@@ -131,6 +169,12 @@
          this.endBgAction();
       }
    }
+
+   /*
+   todo:
+   - settings view - localStorage or SQLite
+   - think about the way the task will be checked - maybe a task status should be added?
+   */
 </script>
 
 <style lang="scss" scoped>
@@ -140,7 +184,8 @@
       left: 0px;
    }
 
-   .put-on-top {
-      z-index: 1001;
+   .v-list a {
+      text-decoration: none;
+      color: white;
    }
 </style>

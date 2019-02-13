@@ -12,6 +12,7 @@
          panic: 'Zgłoszenie alarmu',
          raport_issue: 'Zgłoś problem',
          read_instructions: 'Przeczytaj instrukcje',
+         settings: 'Ustawienia',
          logout: 'Wyloguj'
       },
       task_list: {
