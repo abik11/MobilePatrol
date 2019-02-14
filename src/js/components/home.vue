@@ -2,12 +2,16 @@
    <v-layout row>
       <login-box v-if="loggedIn" class="login-box full" @login="onUserLoggedin" />
       <v-layout v-else row>
+         <v-snackbar v-model="toast" right top :timeout="toastTimeout">
+            {{ $t('common.sms_confirmation_send') }}
+            <v-btn color="primary" flat @click="toast = false">{{ $t('common.close') }}</v-btn>
+         </v-snackbar>
          <v-navigation-drawer v-model="nav" absolute dark temporary width="220">
             <v-list class="pt-0">
 
-               <v-list-tile>
+               <v-list-tile @click="panic">
                   <v-list-tile-content>
-                     <v-list-tile-title style="text-decoration: line-through;">{{ $t('side_menu.panic') }}</v-list-tile-title>
+                     <v-list-tile-title>{{ $t('side_menu.panic') }}</v-list-tile-title>
                   </v-list-tile-content>
                </v-list-tile>
                <v-divider></v-divider>
@@ -49,7 +53,7 @@
             <v-list two-line>
                <template v-for="(task, index) in sharedData.userTasks">
                   <v-divider v-if="index > 0" :key="index"></v-divider>
-                  <v-list-tile :key="index">
+                  <v-list-tile :key="index" @click="taskDone(task)">
                      <v-list-tile-content>
                         <strong><v-list-tile-title v-html="task.name"></v-list-tile-title></strong>
                         <v-list-tile-sub-title v-html="task.time"></v-list-tile-sub-title>
@@ -71,7 +75,7 @@
                      </v-btn>
                   </v-flex>
                   <v-flex xs9 pr-4 class="grey--text text--darken-1 text-xs-right">
-                     {{$t('task_list.logged_as')}}: {{sharedData.currentUser}}
+                     {{$t('login.logged_as')}}: {{sharedData.currentUser}}
                   </v-flex>
                </v-layout>
             </v-card>
@@ -92,6 +96,8 @@
       data() {
          return {
             nav: null,
+            toast: false,
+            toastTimeout: 2000,
             error: '',
             sharedData: DataStore.state
          }
@@ -104,44 +110,35 @@
       methods: {
          taskDone(task) {
             var taskDone = confirm(this.$i18n.t("task_list.task_done_question"));
-            if (taskDone) {
-               var now = new Date();
-               var time = now.toLocaleTimeString();
-               var message = this.$i18n.t("task_list.task_done");
-               message = `${message}\n${this.sharedData.currentUser}\n${task.name}\n${time}`;
-
-               this.$device.sendSms(
-                  this.sharedData.reportNumber,
-                  message,
-                  this.onMessageSent,
-                  this.basicErrorHandler
-               );
-            }
+            if (taskDone) this.sendSmsReport("task_list.task_done", task.name);
          },
          panic() {
-            var sendPanic = confirm(this.$i18n.t("task_list.panic_question"));
-            if (sendPanic) {
-               var now = new Date();
-               var time = now.toLocaleTimeString();
-               var message = this.$i18n.t("task_list.panic");
-               message = `${message}\n${this.sharedData.currentUser}\n${time}`;
-
-               this.$device.sendSms(
-                  this.sharedData.reportNumber,
-                  message,
-                  this.onMessageSent,
-                  this.basicErrorHandler
-               );
+            var sendPanic = confirm(this.$i18n.t("panic.panic_question"));
+            if (sendPanic) this.sendSmsReport("panic.panic_send");
+         },
+         sendSmsReport(titleStringName, optionalContent) {
+            var title = this.$i18n.t(titleStringName);
+            var time = new Date().toLocaleTimeString();
+            var separator = "\n";
+            if (optionalContent == void 0) {
+               optionalContent = '';
+               separator = '';
             }
+
+            var message = `${title}\n${this.sharedData.currentUser}\n${time}${separator}${optionalContent}`;
+
+            this.$device.sendSms
+               (this.sharedData.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
          },
          onMessageSent() {
+            this.toast = true;
             console.log("SMS has been sent");
          },
          startBgAction() {
             this.sharedData.bgTaskHandler = setInterval(() => {
                console.log('Executing interval');
                //here checking tasks will be done
-            }, /*5 **/ 60000);
+            }, 5 * 60000);
             this.sharedData.bgTaskActive = true;
             console.log('Background task has started.');
          },
@@ -169,11 +166,12 @@
          this.endBgAction();
       }
    }
-
    /*
-   todo:
-   - settings view - localStorage or SQLite
-   - think about the way the task will be checked - maybe a task status should be added?
+      todo:
+      - settings view - localStorage or SQLite
+      - think about the way the task will be checked - maybe a task status should be added?
+      - styling for instruction and issue modules
+      - transitions & animations
    */
 </script>
 

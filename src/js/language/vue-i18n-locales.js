@@ -1,12 +1,15 @@
 ﻿var Locale = {
    pl: {
       common: {
-         send: 'Wyślij'
+         send: 'Wyślij',
+         close: 'Zamknij',
+         sms_confirmation_send: 'Potwierdzenie zostało wysłane'
       },
       login: {
          give_name: 'Podaj imię i nazwisko',
          hint: 'Na przykład: Jan Kowalski',
-         login: 'Zaloguj'
+         login: 'Zaloguj',
+         logged_as: 'Zalogowany jako'
       },
       side_menu: {
          panic: 'Zgłoszenie alarmu',
@@ -18,8 +21,10 @@
       task_list: {
          task_done_question: 'Jesteś pewien, że wykonałeś to zadanie?',
          task_done: 'Zadanie wykonane',
-         logged_as: 'Zalogowany jako',
-         panic_question: 'Jesteś pewien, że chcesz zgłosić alarm?'
+      },
+      panic: {
+         panic_question: 'Jesteś pewien, że chcesz zgłosić alarm?',
+         panic_send: 'Zgłoszenie alarmu'
       },
       issue: {
          make_picture: 'Zrób zdjęcie',
