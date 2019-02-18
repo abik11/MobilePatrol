@@ -74,7 +74,7 @@
                         <v-icon>menu</v-icon>
                      </v-btn>
                   </v-flex>
-                  <v-flex xs9 pr-4 class="grey--text text--darken-1 text-xs-right">
+                  <v-flex xs9 pr-4 class="grey--text text--darken-1 text-xs-right text-truncate">
                      {{$t('login.logged_as')}}: {{sharedData.currentUser}}
                   </v-flex>
                </v-layout>
@@ -170,7 +170,7 @@
       todo:
       - settings view - localStorage or SQLite
       - think about the way the task will be checked - maybe a task status should be added?
-      - styling for instruction and issue modules
+      - styling for issue module
       - transitions & animations
    */
 </script>
