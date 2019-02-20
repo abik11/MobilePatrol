@@ -1,20 +1,16 @@
 ﻿<template>
-   <v-layout column>
-      <v-flex xs12>
-         <v-layout row>
-            <v-flex xs6 text-xs-left>
-               <v-btn outline color="primary" @click="captureImage">
-                  <v-icon>photo_camera</v-icon>
-                  {{$t('issue.make_picture')}}
-               </v-btn>
-            </v-flex>
-            <v-flex xs6 text-xs-right>
-               <v-btn outline color="primary" @click="sendImage" v-if="imageCaptured">
-                  <v-icon>send</v-icon>
-                  {{$t('common.send')}}
-               </v-btn>
-            </v-flex>
-         </v-layout>
+   <v-layout row wrap>
+      <v-flex xs6 text-xs-left>
+         <v-btn outline color="primary" @click="captureImage">
+            <v-icon>photo_camera</v-icon>
+            {{$t('issue.make_picture')}}
+         </v-btn>
+      </v-flex>
+      <v-flex xs6 text-xs-right>
+         <v-btn outline color="primary" @click="sendImage" v-if="imageCaptured">
+            <v-icon>send</v-icon>
+            {{$t('common.send')}}
+         </v-btn>
       </v-flex>
       <v-flex xs12 text-xs-center>
          <img class="img" :src="imageUri" />

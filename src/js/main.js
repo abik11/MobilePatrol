@@ -13,6 +13,7 @@ import theme from './theme.js';
 import Home from './components/home.vue';
 import Instruction from './components/instruction.vue';
 import Issue from './components/issue.vue';
+import Settings from './components/settings.vue';
 
 (function () {
    "use strict";
@@ -34,7 +35,8 @@ import Issue from './components/issue.vue';
          routes: [
             { path: '/', component: Home },
             { path: '/instruction', component: Instruction },
-            { path: '/issue', component: Issue }
+            { path: '/issue', component: Issue },
+            { path: '/settings', component: Settings }
          ]
       });
 

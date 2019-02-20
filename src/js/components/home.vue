@@ -34,11 +34,13 @@
                </router-link>
                <v-divider></v-divider>
 
-               <v-list-tile>
-                  <v-list-tile-content>
-                     <v-list-tile-title style="text-decoration: line-through;">{{ $t('side_menu.settings') }}</v-list-tile-title>
-                  </v-list-tile-content>
-               </v-list-tile>
+               <router-link to="/settings">
+                  <v-list-tile>
+                     <v-list-tile-content>
+                        <v-list-tile-title>{{ $t('side_menu.settings') }}</v-list-tile-title>
+                     </v-list-tile-content>
+                  </v-list-tile>
+               </router-link>
                <v-divider></v-divider>
 
                <v-list-tile @click="sharedData.currentUser = ''">
@@ -170,7 +172,6 @@
       todo:
       - settings view - localStorage or SQLite
       - think about the way the task will be checked - maybe a task status should be added?
-      - styling for issue module
       - transitions & animations
    */
 </script>
