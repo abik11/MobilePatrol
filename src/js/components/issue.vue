@@ -28,7 +28,6 @@
       data: function () {
          return {
             imageUri: '',
-            error: '',
             sharedData: DataStore.state
          }
       },

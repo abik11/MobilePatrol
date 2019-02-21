@@ -30,6 +30,9 @@
       issue: {
          make_picture: 'Zrób zdjęcie',
          issue_raport: 'Zgłoszenie problemu'
+      },
+      settings: {
+         phone: 'Numer telefonu do raportów SMS'
       }
    }
 }

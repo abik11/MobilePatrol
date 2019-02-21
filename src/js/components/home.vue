@@ -76,7 +76,7 @@
             </v-list>
          </v-flex>
 
-         <v-footer absolute height="auto" class="put-on-top">
+         <v-footer absolute height="auto">
             <v-card flat tile color="secondary" style="width: 100%;">
                <v-layout align-center justify-center fill-height>
                   <v-flex xs3>
@@ -97,37 +97,24 @@
 
 <script>
    import DataStore from '../core/dataStore';
-   import ErrorMixin from '../core/errorMixin';
+   import ErrorToastMixin from '../core/errorToastMixin';
    import LoginBox from './loginBox.vue';
 
    export default {
       name: 'home',
       components: { LoginBox },
-      mixins: [ErrorMixin],
+      mixins: [ErrorToastMixin],
       data() {
          return {
             nav: false,
             toast: false,
             toastTimeout: 2000,
-            errorToast: false,
-            errorToastTimeout: 8000,
-            errorTimeoutHandler: null,
-            error: '',
             sharedData: DataStore.state
          }
       },
       computed: {
          loggedIn() {
             return this.sharedData.currentUser == '';
-         }
-      },
-      watch: {
-         error(newError) {
-            if (newError != '') {
-               this.errorToast = true;
-               this.errorTimeoutHandler = setTimeout
-                  (() => this.error = '', this.errorToastTimeout);
-            }
          }
       },
       methods: {
@@ -177,20 +164,15 @@
             this.sharedData.bgTaskActive = false;
             console.log('Background task has stopped.');
          },
-         clearError() {
-            clearTimeout(this.errorTimeoutHandler);
-            this.errorToast = false;
-            this.error = '';
-         },
          onUserLoggedin(userName) {
             this.sharedData.currentUser = userName;
          }
       },
       created() {
-         //read config from localStorage
-         //...
+         if (localStorage.reportNumber) this.sharedData.reportNumber = localStorage.reportNumber;
+         if (localStorage.dailyTasks) this.sharedData.dailyTasks = localStorage.dailyTasks;
+         //if (localStorage.userTasks) this.sharedData.userTasks = localStorage.userTasks;
          this.sharedData.userTasks = this.sharedData.dailyTasks;
-         this.sharedData.reportNumber = '';
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();
@@ -203,7 +185,10 @@
    }
    /*
       todo:
-      - save settings in localStorage and read on startup
+      - edit tasks in settings module
+      - error handling in issue module
+      - error handling in settings module
+      - success toast in settings module
       - transitions & animations
    */
 </script>
