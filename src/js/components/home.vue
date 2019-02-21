@@ -2,10 +2,16 @@
    <v-layout row>
       <login-box v-if="loggedIn" class="login-box full" @login="onUserLoggedin" />
       <v-layout v-else row>
+
          <v-snackbar v-model="toast" right top :timeout="toastTimeout">
             {{ $t('common.sms_confirmation_send') }}
             <v-btn color="primary" flat @click="toast = false">{{ $t('common.close') }}</v-btn>
          </v-snackbar>
+         <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
+            {{ error }}
+            <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
+         </v-snackbar>
+
          <v-navigation-drawer v-model="nav" absolute dark temporary width="220">
             <v-list class="pt-0">
 
@@ -51,6 +57,7 @@
 
             </v-list>
          </v-navigation-drawer>
+
          <v-flex xs12 sm6 offset-sm3>
             <v-list two-line>
                <template v-for="(task, index) in sharedData.userTasks">
@@ -68,6 +75,7 @@
                </template>
             </v-list>
          </v-flex>
+
          <v-footer absolute height="auto" class="put-on-top">
             <v-card flat tile color="secondary" style="width: 100%;">
                <v-layout align-center justify-center fill-height>
@@ -82,6 +90,7 @@
                </v-layout>
             </v-card>
          </v-footer>
+
       </v-layout>
    </v-layout>
 </template>
@@ -97,9 +106,12 @@
       mixins: [ErrorMixin],
       data() {
          return {
-            nav: null,
+            nav: false,
             toast: false,
             toastTimeout: 2000,
+            errorToast: false,
+            errorToastTimeout: 8000,
+            errorTimeoutHandler: null,
             error: '',
             sharedData: DataStore.state
          }
@@ -107,6 +119,15 @@
       computed: {
          loggedIn() {
             return this.sharedData.currentUser == '';
+         }
+      },
+      watch: {
+         error(newError) {
+            if (newError != '') {
+               this.errorToast = true;
+               this.errorTimeoutHandler = setTimeout
+                  (() => this.error = '', this.errorToastTimeout);
+            }
          }
       },
       methods: {
@@ -119,6 +140,11 @@
             if (sendPanic) this.sendSmsReport("panic.panic_send");
          },
          sendSmsReport(titleStringName, optionalContent) {
+            if (this.sharedData.reportNumber.length == 0) {
+               this.error = this.$i18n.t('common.report_number_error');
+               return;
+            }
+
             var title = this.$i18n.t(titleStringName);
             var time = new Date().toLocaleTimeString();
             var separator = "\n";
@@ -151,13 +177,20 @@
             this.sharedData.bgTaskActive = false;
             console.log('Background task has stopped.');
          },
+         clearError() {
+            clearTimeout(this.errorTimeoutHandler);
+            this.errorToast = false;
+            this.error = '';
+         },
          onUserLoggedin(userName) {
             this.sharedData.currentUser = userName;
          }
       },
       created() {
+         //read config from localStorage
+         //...
          this.sharedData.userTasks = this.sharedData.dailyTasks;
-         this.sharedData.reportNumber = '797026001';
+         this.sharedData.reportNumber = '';
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();
@@ -170,8 +203,7 @@
    }
    /*
       todo:
-      - settings view - localStorage or SQLite
-      - think about the way the task will be checked - maybe a task status should be added?
+      - save settings in localStorage and read on startup
       - transitions & animations
    */
 </script>

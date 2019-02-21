@@ -2,5 +2,6 @@
 
 export default {
    primary: colors.orange.darken4,
-   secondary: colors.grey.darken4
+   secondary: colors.grey.darken4,
+   error: colors.red.darken4
 }

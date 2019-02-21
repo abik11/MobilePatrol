@@ -7,7 +7,14 @@
 </template>
 
 <script>
+   import DataStore from '../core/dataStore';
+   
    export default {
-      name: 'settings'
+      name: 'settings',
+      data() {
+         return {
+            sharedData: DataStore.state
+         }
+      }
    }
 </script>
