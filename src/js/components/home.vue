@@ -187,8 +187,6 @@
       todo:
       - edit tasks in settings module
       - error handling in issue module
-      - error handling in settings module
-      - success toast in settings module
       - transitions & animations
    */
 </script>

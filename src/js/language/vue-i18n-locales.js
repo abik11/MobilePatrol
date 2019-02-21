@@ -3,6 +3,7 @@
       common: {
          send: 'Wyślij',
          close: 'Zamknij',
+         saved: 'Zapisano',
          sms_confirmation_send: 'Potwierdzenie zostało wysłane',
          report_number_error: 'Numer telefonu do raportowania nie został ustawiony'
       },
