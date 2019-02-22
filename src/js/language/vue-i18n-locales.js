@@ -10,7 +10,8 @@
       login: {
          give_name: 'Podaj imię i nazwisko',
          hint: 'Na przykład: Jan Kowalski',
-         login: 'Zaloguj',
+         give_password: 'Podaj hasło',
+         wrong_password: 'Błędne hasło',
          logged_as: 'Zalogowany jako'
       },
       side_menu: {

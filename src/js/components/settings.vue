@@ -1,5 +1,6 @@
 ﻿<template>
-   <v-layout row wrap>
+   <v-layout row>
+
       <v-snackbar v-model="toast" right top :timeout="toastTimeout">
          {{ $t('common.saved') }}
          <v-btn color="primary" flat @click="toast = false">{{ $t('common.close') }}</v-btn>
@@ -9,41 +10,55 @@
          <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
 
-      <v-flex xs12 text-xs-left>
-         <v-text-field box color="primary"
-                       v-model="reportNumber"
-                       :label="$t('settings.phone')"
-                       prepend-inner-icon="phone">
-         </v-text-field>
-      </v-flex>
+      <login-box v-if="!authorized" class="login-box full" type="pass" @login="onUserAuthorize" />
+      <v-layout v-else row wrap>
+         <v-flex xs12 text-xs-left>
+            <v-text-field box color="primary"
+                          v-model="reportNumber"
+                          :label="$t('settings.phone')"
+                          prepend-inner-icon="phone">
+            </v-text-field>
+         </v-flex>
 
-      <v-footer absolute height="auto">
-         <v-layout align-center justify-end fill-height>
-            <v-flex xs3>
-               <v-btn color="primary" fab dark @click="saveSettings">
-                  <v-icon>save</v-icon>
-               </v-btn>
-            </v-flex>
-         </v-layout>
-      </v-footer>
+         <v-footer absolute height="auto">
+            <v-layout align-center justify-end fill-height>
+               <v-flex xs3>
+                  <v-btn color="primary" fab dark @click="saveSettings">
+                     <v-icon>save</v-icon>
+                  </v-btn>
+               </v-flex>
+            </v-layout>
+         </v-footer>
+      </v-layout>
+
    </v-layout>
 </template>
 
 <script>
    import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
+   import LoginBox from './loginBox.vue';
 
    export default {
       name: 'settings',
+      components: { LoginBox },
+      mixins: [ErrorToastMixin],
       data() {
          return {
             toast: false,
             toastTimeout: 2000,
             reportNumber: '',
+            authorized: false,
             sharedData: DataStore.state
          }
       },
       methods: {
+         onUserAuthorize(password) {
+            if (password == 'cycki')
+               this.authorized = true;
+            else
+               this.error = this.$i18n.t('login.wrong_password');
+         },
          saveSettings() {
             this.sharedData.reportNumber = this.reportNumber;
             localStorage.reportNumber = this.reportNumber;

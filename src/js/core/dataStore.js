@@ -3,6 +3,7 @@
    debug: false,
    state: {
       appVersion: '1.0',
+      settingsPassword: '',
       dailyTasks: [
          { name: 'Sprwadź punkt numer 1', time: '18:00:00' },
          { name: 'Sprwadź punkt numer 2', time: '18:05:00' },

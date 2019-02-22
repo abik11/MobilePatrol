@@ -1,6 +1,6 @@
 ﻿<template>
    <v-layout row>
-      <login-box v-if="loggedIn" class="login-box full" @login="onUserLoggedin" />
+      <login-box v-if="!loggedIn" class="login-box full" @login="onUserLoggedin" />
       <v-layout v-else row>
 
          <v-snackbar v-model="toast" right top :timeout="toastTimeout">
@@ -114,7 +114,7 @@
       },
       computed: {
          loggedIn() {
-            return this.sharedData.currentUser == '';
+            return this.sharedData.currentUser != '';
          }
       },
       methods: {
@@ -186,18 +186,11 @@
    /*
       todo:
       - edit tasks in settings module
-      - error handling in issue module
       - transitions & animations
    */
 </script>
 
 <style lang="scss" scoped>
-   .login-box {
-      position: fixed;
-      top: 0px;
-      left: 0px;
-   }
-
    .v-list a {
       text-decoration: none;
       color: white;

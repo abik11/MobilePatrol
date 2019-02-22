@@ -1,5 +1,10 @@
 ﻿<template>
    <v-layout row wrap>
+      <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
+         {{ error }}
+         <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
+      </v-snackbar>
+
       <v-flex xs6 text-xs-left>
          <v-btn outline color="primary" @click="captureImage">
             <v-icon>photo_camera</v-icon>
@@ -20,14 +25,15 @@
 
 <script>
    import DataStore from '../core/dataStore';
-   import ErrorMixin from '../core/errorMixin';
+   import ErrorToastMixin from '../core/errorToastMixin';
 
    export default {
       name: 'issue',
-      mixins: [ErrorMixin],
+      mixins: [ErrorToastMixin],
       data: function () {
          return {
             imageUri: '',
+            imgPrefix: 'data:image/jpeg;base64,',
             sharedData: DataStore.state
          }
       },
@@ -47,17 +53,21 @@
             });
          },
          sendImage() {
-            var now = new Date();
-            var time = now.toLocaleTimeString();
-            var message = this.$i18n.t("issue.issue_raport");
-            message = `${message}\n${this.sharedData.currentUser}\n${time}`;
+            if (this.sharedData.reportNumber.length == 0) {
+               this.error = this.$i18n.t('common.report_number_error');
+               return;
+            }
+
+            var time = new Date().toLocaleTimeString();
+            var title = this.$i18n.t("issue.issue_raport");
+            var message = `${title}\n${this.sharedData.currentUser}\n${time}`;
 
             this.getImageAsBase64()
                .then(imgBase64 => {
                   this.$device.sendMms(
                      this.sharedData.reportNumber,
                      message,
-                     `data:image/jpeg;base64,${imgBase64}`,
+                     `${this.imgPrefix}${imgBase64}`,
                      this.onPictureSent,
                      this.basicErrorHandler,
                      'INTENT'
