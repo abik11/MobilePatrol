@@ -10,7 +10,8 @@
          <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
 
-      <login-box v-if="!authorized" class="login-box full" type="pass" @login="onUserAuthorize" />
+      <password-box v-if="!passwordSet" class="login-box full" />
+      <login-box v-else-if="!authorized" class="login-box full" type="pass" @login="onUserAuthorize" />
       <v-layout v-else row wrap>
          <v-flex xs12 text-xs-left>
             <v-text-field box color="primary"
@@ -37,11 +38,12 @@
 <script>
    import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
-   import LoginBox from './loginBox.vue';
+   import LoginBox from './auth/loginBox.vue';
+   import PasswordBox from './auth/passwordBox.vue';
 
    export default {
       name: 'settings',
-      components: { LoginBox },
+      components: { LoginBox, PasswordBox },
       mixins: [ErrorToastMixin],
       data() {
          return {
@@ -52,9 +54,14 @@
             sharedData: DataStore.state
          }
       },
+      computed: {
+         passwordSet() {
+            return this.sharedData.settingsPassword != '';
+         }
+      },
       methods: {
          onUserAuthorize(password) {
-            if (password == 'cycki')
+            if (password == this.sharedData.settingsPassword)
                this.authorized = true;
             else
                this.error = this.$i18n.t('login.wrong_password');

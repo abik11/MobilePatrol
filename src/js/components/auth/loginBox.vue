@@ -3,16 +3,16 @@
       <v-flex xs12>
          <form @submit.prevent="sendCredentials">
             <v-layout align-center justify-center column fill-height>
-               <v-flex xs12>
-                  <v-text-field v-if="!secure"
-                                color="primary"
+               <v-flex xs12 v-if="!secure">
+                  <v-text-field color="primary"
                                 v-model="credentials" required
                                 :label="$t('login.give_name')"
                                 :hint="$t('login.hint')"
                                 prepend-icon="person">
                   </v-text-field>
-                  <v-text-field v-else
-                                color="primary"
+               </v-flex>
+               <v-flex xs12 v-else>
+                  <v-text-field color="primary"
                                 v-model="credentials" required
                                 :label="$t('login.give_password')"
                                 :append-icon="show ? 'visibility_off' : 'visibility'"
@@ -25,6 +25,9 @@
                      <v-icon>play_arrow</v-icon>
                   </v-btn>
                </v-flex>
+               <v-flex v-if="secure" xs12 mt-5>
+                  <v-btn flat @click="resetPassword">{{ $t('login.reset_password') }}</v-btn>
+               </v-flex>
             </v-layout>
          </form>
       </v-flex>
@@ -32,6 +35,8 @@
 </template>
 
 <script>
+   import DataStore from '../../core/dataStore';
+
    export default {
       name: 'loginBox',
       props: {
@@ -43,7 +48,8 @@
       data() {
          return {
             credentials: '',
-            show: false
+            show: false,
+            sharedData: DataStore.state
          };
       },
       computed: {
@@ -54,6 +60,12 @@
       methods: {
          sendCredentials() {
             this.$emit('login', this.credentials);
+         },
+         resetPassword() {
+            if (this.sharedData.reportNumber == '')
+               this.sharedData.settingsPassword = '';
+            else
+               console.log('sending random password through sms...');
          }
       }
    }

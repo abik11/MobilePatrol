@@ -98,7 +98,7 @@
 <script>
    import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
-   import LoginBox from './loginBox.vue';
+   import LoginBox from './auth/loginBox.vue';
 
    export default {
       name: 'home',
@@ -172,6 +172,7 @@
          if (localStorage.reportNumber) this.sharedData.reportNumber = localStorage.reportNumber;
          if (localStorage.dailyTasks) this.sharedData.dailyTasks = localStorage.dailyTasks;
          //if (localStorage.userTasks) this.sharedData.userTasks = localStorage.userTasks;
+         if (localStorage.settingsPassword) this.sharedData.settingsPassword = localStorage.settingsPassword;
          this.sharedData.userTasks = this.sharedData.dailyTasks;
       },
       mounted() {
@@ -187,6 +188,8 @@
       todo:
       - edit tasks in settings module
       - transitions & animations
+      - password as hash
+      - repair bg task
    */
 </script>
 

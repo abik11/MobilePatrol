@@ -9,9 +9,11 @@
       },
       login: {
          give_name: 'Podaj imię i nazwisko',
-         hint: 'Na przykład: Jan Kowalski',
+         hint: 'Na przykład: Jan Kowalski', 
          give_password: 'Podaj hasło',
+         retype_password: 'Powtórz hasło',
          wrong_password: 'Błędne hasło',
+         reset_password: 'Resetuj hasło',
          logged_as: 'Zalogowany jako'
       },
       side_menu: {
