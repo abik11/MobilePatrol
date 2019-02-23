@@ -64,8 +64,18 @@
          resetPassword() {
             if (this.sharedData.reportNumber == '')
                this.sharedData.settingsPassword = '';
-            else
-               console.log('sending random password through sms...');
+            else {
+               var title = this.$i18n.t('login.new_password');
+               var time = new Date().toLocaleTimeString();
+               var newPassword = 'dupa';
+               var message = `${title}\n${this.sharedData.currentUser}\n${time}\n${newPassword}`;
+
+               this.$device.sendSms
+                  (this.sharedData.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
+
+               localStorage.settingsPassword = newPassword;
+               this.sharedData.settingsPassword = newPassword;
+            }
          }
       }
    }

@@ -10,6 +10,7 @@ import Locale from './language/vue-i18n-locales.js';
 import '../css/main.scss';
 import theme from './theme.js';
 //---
+import App from './app.vue';
 import Home from './components/home.vue';
 import Instruction from './components/instruction.vue';
 import Issue from './components/issue.vue';
@@ -46,7 +47,7 @@ import Settings from './components/settings.vue';
          messages: Locale
       });
 
-      new Vue({ router, i18n }).$mount("#app");
+      new Vue({ components: { App }, router, i18n }).$mount("#app");
    }
 
    function onPause() { }

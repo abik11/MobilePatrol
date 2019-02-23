@@ -14,6 +14,7 @@
          retype_password: 'Powtórz hasło',
          wrong_password: 'Błędne hasło',
          reset_password: 'Resetuj hasło',
+         new_password: 'Nowe hasło',
          logged_as: 'Zalogowany jako'
       },
       side_menu: {
