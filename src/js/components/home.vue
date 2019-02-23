@@ -1,5 +1,5 @@
 ﻿<template>
-   <v-layout row>
+   <v-layout row class="footer-spacer">
       <login-box v-if="!loggedIn" class="login-box full" @login="onUserLoggedin" />
       <v-layout v-else row>
 
@@ -12,7 +12,7 @@
             <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
          </v-snackbar>
 
-         <v-navigation-drawer v-model="nav" absolute dark temporary width="220">
+         <v-navigation-drawer v-model="nav" absolute dark temporary fixed width="220">
             <v-list class="pt-0">
 
                <v-list-tile @click="panic">
@@ -58,17 +58,17 @@
             </v-list>
          </v-navigation-drawer>
 
-         <v-flex xs12 sm6 offset-sm3>
+         <v-flex xs12>
             <v-list two-line>
                <template v-for="(task, index) in sharedData.userTasks">
-                  <v-divider v-if="index > 0" :key="index"></v-divider>
+                  <v-divider v-if="index > 0" :key="-index"></v-divider>
                   <v-list-tile :key="index" @click="taskDone(task)">
                      <v-list-tile-content>
                         <strong><v-list-tile-title v-html="task.name"></v-list-tile-title></strong>
                         <v-list-tile-sub-title v-html="task.time"></v-list-tile-sub-title>
                      </v-list-tile-content>
                      <v-spacer></v-spacer>
-                     <v-btn color="primary" outline fab @click="sendName">
+                     <v-btn color="primary" outline fab>
                         <v-icon>check</v-icon>
                      </v-btn>
                   </v-list-tile>
@@ -76,7 +76,7 @@
             </v-list>
          </v-flex>
 
-         <v-footer absolute height="auto">
+         <v-footer fixed height="auto">
             <v-card flat tile color="secondary" style="width: 100%;">
                <v-layout align-center justify-center fill-height>
                   <v-flex xs3>

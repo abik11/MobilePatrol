@@ -1,6 +1,5 @@
 ﻿<template>
-   <v-layout row>
-
+   <v-layout row class="footer-spacer">
       <v-snackbar v-model="toast" right top :timeout="toastTimeout">
          {{ $t('common.saved') }}
          <v-btn color="primary" flat @click="toast = false">{{ $t('common.close') }}</v-btn>
@@ -12,7 +11,7 @@
 
       <password-box v-if="!passwordSet" class="login-box full" />
       <login-box v-else-if="!authorized" class="login-box full" type="pass" @login="onUserAuthorize" />
-      <v-layout v-else row wrap>
+      <v-layout v-else column>
          <v-flex xs12 text-xs-left>
             <v-text-field box color="primary"
                           v-model="reportNumber"
@@ -21,7 +20,28 @@
             </v-text-field>
          </v-flex>
 
-         <v-footer absolute height="auto">
+         <v-flex xs12>
+            <v-list two-line>
+               <template v-for="(task, index) in dailyTasks">
+                  <v-divider v-if="index > 0" :key="-index"></v-divider>
+                  <v-list-tile :key="index">
+                     <v-list-tile-content>
+                        <strong><v-list-tile-title v-html="task.name"></v-list-tile-title></strong>
+                        <v-list-tile-sub-title v-html="task.time"></v-list-tile-sub-title>
+                     </v-list-tile-content>
+                     <v-spacer></v-spacer>
+                     <v-btn color="primary" outline fab @click="editTask(task)">
+                        <v-icon>edit</v-icon>
+                     </v-btn>
+                     <v-btn color="primary" outline fab @click="deleteTask(task)">
+                        <v-icon>close</v-icon>
+                     </v-btn>
+                  </v-list-tile>
+               </template>
+            </v-list>
+         </v-flex>
+
+         <v-footer fixed height="auto">
             <v-layout align-center justify-end fill-height>
                <v-flex xs3>
                   <v-btn color="primary" fab dark @click="saveSettings">
@@ -50,6 +70,7 @@
             toast: false,
             toastTimeout: 2000,
             reportNumber: '',
+            dailyTasks: [],
             authorized: false,
             sharedData: DataStore.state
          }
@@ -66,14 +87,23 @@
             else
                this.error = this.$i18n.t('login.wrong_password');
          },
+         editTask(task) {
+            console.log(task);
+         },
+         deleteTask(task) {
+
+         },
          saveSettings() {
             this.sharedData.reportNumber = this.reportNumber;
             localStorage.reportNumber = this.reportNumber;
+            this.sharedData.dailyTasks = this.dailyTasks;
+            localStorage.dailyTasks = this.dailyTasks;
             this.toast = true;
          }
       },
       created() {
          this.reportNumber = this.sharedData.reportNumber;
+         this.dailyTasks = this.sharedData.dailyTasks;
       }
    }
 </script>
