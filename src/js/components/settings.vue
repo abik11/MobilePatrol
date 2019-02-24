@@ -9,12 +9,12 @@
          <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
 
-      <v-dialog v-model="dialog" max-width="250px">
+      <v-dialog v-model="dialog" max-width="300px">
          <v-card>
             <v-card-text>
                <v-layout wrap>
                   <v-flex xs12>
-                     <v-text-field :label="$t('settings.task_name')"></v-text-field>
+                     <v-text-field v-model="taskName" :label="$t('settings.task_name')"></v-text-field>
                   </v-flex>
                   <v-flex xs12>
                      <v-time-picker v-model="taskTime" format="24hr"></v-time-picker>
@@ -23,7 +23,7 @@
             </v-card-text>
             <v-card-actions>
                <v-spacer></v-spacer>
-               <v-btn color="primary" flat @click="dialog = false">{{ $t('common.save') }}</v-btn>
+               <v-btn color="primary" flat @click="saveTasks">{{ $t('common.save') }}</v-btn>
             </v-card-actions>
          </v-card>
       </v-dialog>
@@ -45,8 +45,8 @@
                   <v-divider v-if="index > 0" :key="-index"></v-divider>
                   <v-list-tile :key="index">
                      <v-list-tile-content>
-                        <strong><v-list-tile-title v-html="task.name"></v-list-tile-title></strong>
-                        <v-list-tile-sub-title v-html="task.time"></v-list-tile-sub-title>
+                        <strong><v-list-tile-title>{{ task.name }}</v-list-tile-title></strong>
+                        <v-list-tile-sub-title>{{ task.time.toLocaleTimeString() }}</v-list-tile-sub-title>
                      </v-list-tile-content>
                      <v-spacer></v-spacer>
                      <v-btn color="primary" outline fab @click="editTask(task)">
@@ -99,6 +99,7 @@
             taskName: '',
             taskTime: null,
             taskId: 0,
+            editMode: '',
             authorized: false,
             sharedData: DataStore.state
          }
@@ -116,15 +117,28 @@
                this.error = this.$i18n.t('login.wrong_password');
          },
          addTask() {
+            this.editMode = 'add';
+            this.taskName = '';
+            this.taskTime = _.now();
             var task = _.maxBy(this.dailyTasks, 'id');
             this.taskId = task ? task.id + 1 : 0;
             this.dialog = true;
          },
          editTask(task) {
+            this.editMode = 'edit';
             this.taskName = task.name;
             this.taskTime = task.time;
             this.taskId = task.id;
             this.dialog = true;
+         },
+         saveTasks() {
+            if (this.editMode == 'add') {
+
+            }
+            else if (this.editMode == 'edit') {
+
+            }
+            this.dialog = false;
          },
          saveSettings() {
             this.sharedData.reportNumber = this.reportNumber;
