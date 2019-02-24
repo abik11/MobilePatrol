@@ -9,6 +9,25 @@
          <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
 
+      <v-dialog v-model="dialog" max-width="250px">
+         <v-card>
+            <v-card-text>
+               <v-layout wrap>
+                  <v-flex xs12>
+                     <v-text-field :label="$t('settings.task_name')"></v-text-field>
+                  </v-flex>
+                  <v-flex xs12>
+                     <v-time-picker v-model="taskTime" format="24hr"></v-time-picker>
+                  </v-flex>
+               </v-layout>
+            </v-card-text>
+            <v-card-actions>
+               <v-spacer></v-spacer>
+               <v-btn color="primary" flat @click="dialog = false">{{ $t('common.save') }}</v-btn>
+            </v-card-actions>
+         </v-card>
+      </v-dialog>
+
       <password-box v-if="!passwordSet" class="login-box full" />
       <login-box v-else-if="!authorized" class="login-box full" type="pass" @login="onUserAuthorize" />
       <v-layout v-else column>
@@ -33,7 +52,7 @@
                      <v-btn color="primary" outline fab @click="editTask(task)">
                         <v-icon>edit</v-icon>
                      </v-btn>
-                     <v-btn color="primary" outline fab @click="deleteTask(task)">
+                     <v-btn color="primary" outline fab @click="dailyTasks.splice(index, 1)">
                         <v-icon>close</v-icon>
                      </v-btn>
                   </v-list-tile>
@@ -42,8 +61,13 @@
          </v-flex>
 
          <v-footer fixed height="auto">
-            <v-layout align-center justify-end fill-height>
-               <v-flex xs3>
+            <v-layout align-center justify-center fill-height>
+               <v-flex xs6 class="text-xs-left">
+                  <v-btn color="primary" fab dark @click="addTask">
+                     <v-icon>add</v-icon>
+                  </v-btn>
+               </v-flex>
+               <v-flex xs6 class="text-xs-right">
                   <v-btn color="primary" fab dark @click="saveSettings">
                      <v-icon>save</v-icon>
                   </v-btn>
@@ -69,8 +93,12 @@
          return {
             toast: false,
             toastTimeout: 2000,
+            dialog: false,
             reportNumber: '',
             dailyTasks: [],
+            taskName: '',
+            taskTime: null,
+            taskId: 0,
             authorized: false,
             sharedData: DataStore.state
          }
@@ -87,23 +115,28 @@
             else
                this.error = this.$i18n.t('login.wrong_password');
          },
-         editTask(task) {
-            console.log(task);
+         addTask() {
+            var task = _.maxBy(this.dailyTasks, 'id');
+            this.taskId = task ? task.id + 1 : 0;
+            this.dialog = true;
          },
-         deleteTask(task) {
-
+         editTask(task) {
+            this.taskName = task.name;
+            this.taskTime = task.time;
+            this.taskId = task.id;
+            this.dialog = true;
          },
          saveSettings() {
             this.sharedData.reportNumber = this.reportNumber;
             localStorage.reportNumber = this.reportNumber;
-            this.sharedData.dailyTasks = this.dailyTasks;
-            localStorage.dailyTasks = this.dailyTasks;
+            this.sharedData.dailyTasks = _.clone(this.dailyTasks);
+            localStorage.dailyTasks = JSON.stringify(this.dailyTasks);
             this.toast = true;
          }
       },
       created() {
          this.reportNumber = this.sharedData.reportNumber;
-         this.dailyTasks = this.sharedData.dailyTasks;
+         this.dailyTasks = _.clone(this.sharedData.dailyTasks);
       }
    }
 </script>

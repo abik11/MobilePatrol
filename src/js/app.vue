@@ -32,11 +32,9 @@
          }
       },
       created() {
+         if (localStorage.dailyTasks) this.sharedData.dailyTasks = JSON.parse(localStorage.dailyTasks);
          if (localStorage.reportNumber) this.sharedData.reportNumber = localStorage.reportNumber;
-         if (localStorage.dailyTasks) this.sharedData.dailyTasks = localStorage.dailyTasks;
-         //if (localStorage.userTasks) this.sharedData.userTasks = localStorage.userTasks;
          if (localStorage.settingsPassword) this.sharedData.settingsPassword = localStorage.settingsPassword;
-         this.sharedData.userTasks = this.sharedData.dailyTasks;
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();

@@ -60,7 +60,7 @@
 
          <v-flex xs12>
             <v-list two-line>
-               <template v-for="(task, index) in sharedData.userTasks">
+               <template v-for="(task, index) in sharedData.dailyTasks">
                   <v-divider v-if="index > 0" :key="-index"></v-divider>
                   <v-list-tile :key="index" @click="taskDone(task)">
                      <v-list-tile-content>
@@ -158,6 +158,8 @@
       todo:
       - transitions & animations
       - password as hash
+      - add vuex ?
+      - add dexie ?
    */
 </script>
 

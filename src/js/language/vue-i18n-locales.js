@@ -3,6 +3,7 @@
       common: {
          send: 'Wyślij',
          close: 'Zamknij',
+         save: 'Zapisz',
          saved: 'Zapisano',
          sms_confirmation_send: 'Potwierdzenie zostało wysłane',
          report_number_error: 'Numer telefonu do raportowania nie został ustawiony'
@@ -37,7 +38,8 @@
          issue_raport: 'Zgłoszenie problemu'
       },
       settings: {
-         phone: 'Numer telefonu do raportów SMS'
+         phone: 'Numer telefonu do raportów SMS',
+         task_name: 'Nazwa zadania'
       }
    }
 }
