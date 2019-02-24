@@ -65,7 +65,7 @@
                   <v-list-tile :key="index" @click="taskDone(task)">
                      <v-list-tile-content>
                         <strong><v-list-tile-title>{{ task.name }}</v-list-tile-title></strong>
-                        <v-list-tile-sub-title>{{ task.time.toLocaleTimeString() }}</v-list-tile-sub-title>
+                        <v-list-tile-sub-title>{{ task.time }}</v-list-tile-sub-title>
                      </v-list-tile-content>
                      <v-spacer></v-spacer>
                      <v-btn color="primary" outline fab>

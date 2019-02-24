@@ -9,7 +9,7 @@
          <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
 
-      <v-dialog v-model="dialog" max-width="300px">
+      <v-dialog v-model="dialog" max-width="340px">
          <v-card>
             <v-card-text>
                <v-layout wrap>
@@ -46,7 +46,7 @@
                   <v-list-tile :key="index">
                      <v-list-tile-content>
                         <strong><v-list-tile-title>{{ task.name }}</v-list-tile-title></strong>
-                        <v-list-tile-sub-title>{{ task.time.toLocaleTimeString() }}</v-list-tile-sub-title>
+                        <v-list-tile-sub-title>{{ task.time }}</v-list-tile-sub-title>
                      </v-list-tile-content>
                      <v-spacer></v-spacer>
                      <v-btn color="primary" outline fab @click="editTask(task)">
@@ -119,7 +119,7 @@
          addTask() {
             this.editMode = 'add';
             this.taskName = '';
-            this.taskTime = _.now();
+            this.taskTime = '00:00';
             var task = _.maxBy(this.dailyTasks, 'id');
             this.taskId = task ? task.id + 1 : 0;
             this.dialog = true;
@@ -133,12 +133,32 @@
          },
          saveTasks() {
             if (this.editMode == 'add') {
-
+               if (this.taskName != '') {
+                  this.dailyTasks.push({
+                     name: this.taskName,
+                     time: this.taskTime,
+                     id: this.taskId,
+                     status: 'undone'
+                  });
+                  this.dailyTasks = _.orderBy(this.dailyTasks, 'time');
+                  this.dialog = false;
+               }
+               else {
+                  this.error = this.$i18n.t('settings.adding_task_error');
+               }
             }
             else if (this.editMode == 'edit') {
-
+               if (this.taskName != '') {
+                  var editedTask = _.find(this.dailyTasks, ['id', this.taskId]);
+                  editedTask.name = this.taskName;
+                  editedTask.time = this.taskTime;
+                  this.dailyTasks = _.orderBy(this.dailyTasks, 'time');
+                  this.dialog = false;
+               }
+               else {
+                  this.error = this.$i18n.t('settings.editing_task_error');
+               }
             }
-            this.dialog = false;
          },
          saveSettings() {
             this.sharedData.reportNumber = this.reportNumber;

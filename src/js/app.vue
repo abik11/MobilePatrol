@@ -11,13 +11,18 @@
       name: 'app',
       data() {
          return {
+            lastCheckHour: null,
+            lastCheckMinute: null,
             sharedData: DataStore.state
          };
       },
       methods: {
          startBgAction() {
             this.sharedData.bgTaskHandler = setInterval(() => {
-               console.log('Executing interval');
+               var checkTime = _.now();
+               this.lastCheckHour = checkTime.getHours();
+               this.lastCheckMinute = checkTime.getMinutes();
+               console.log(`Executing interval - last check: ${this.lastCheckHour}:${this.lastCheckMinute}`);
                //here checking tasks will be done
             }, 5 * 60000);
             this.sharedData.bgTaskActive = true;
