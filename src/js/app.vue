@@ -19,12 +19,19 @@
       methods: {
          startBgAction() {
             this.sharedData.bgTaskHandler = setInterval(() => {
-               var checkTime = _.now();
+               var checkTime = new Date();
                this.lastCheckHour = checkTime.getHours();
                this.lastCheckMinute = checkTime.getMinutes();
-               console.log(`Executing interval - last check: ${this.lastCheckHour}:${this.lastCheckMinute}`);
+               var lastCheck = `${this.lastCheckHour}:${this.lastCheckMinute}`;
+               console.log(`Executing interval - last check: ${lastCheck}`);
+
+               if (lastCheck == this.sharedData.taskResetHour)
+                  _.forEach(this.sharedData.dailyTasks, task => {
+                     task.status = 'undone';
+                  });
+
                //here checking tasks will be done
-            }, 5 * 60000);
+            }, 60000);
             this.sharedData.bgTaskActive = true;
             console.log('Background task has started.');
          },

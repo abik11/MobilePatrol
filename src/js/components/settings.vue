@@ -9,15 +9,17 @@
          <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
 
-      <v-dialog v-model="dialog" max-width="340px">
+      <v-dialog v-model="dialog" max-width="280px">
          <v-card>
             <v-card-text>
                <v-layout wrap>
                   <v-flex xs12>
-                     <v-text-field v-model="taskName" :label="$t('settings.task_name')"></v-text-field>
+                     <v-text-field v-model="taskName" :label="$t('settings.task_name')">
+                     </v-text-field>
                   </v-flex>
                   <v-flex xs12>
-                     <v-time-picker v-model="taskTime" format="24hr"></v-time-picker>
+                     <v-time-picker v-model="taskTime" color="primary" format="24hr" width="220">
+                     </v-time-picker>
                   </v-flex>
                </v-layout>
             </v-card-text>

@@ -62,15 +62,19 @@
             <v-list two-line>
                <template v-for="(task, index) in sharedData.dailyTasks">
                   <v-divider v-if="index > 0" :key="-index"></v-divider>
-                  <v-list-tile :key="index" @click="taskDone(task)">
+                  <v-list-tile :key="index">
                      <v-list-tile-content>
                         <strong><v-list-tile-title>{{ task.name }}</v-list-tile-title></strong>
                         <v-list-tile-sub-title>{{ task.time }}</v-list-tile-sub-title>
                      </v-list-tile-content>
                      <v-spacer></v-spacer>
-                     <v-btn color="primary" outline fab>
-                        <v-icon>check</v-icon>
-                     </v-btn>
+                     <transition name="bounce" mode="out-in">
+                        <v-btn v-if="task.status == 'undone'" @click="taskDone(task)"
+                               color="primary" outline fab>
+                           <v-icon>check</v-icon>
+                        </v-btn>
+                        <v-icon v-else class="px-4" color="success">check</v-icon>
+                     </transition>
                   </v-list-tile>
                </template>
             </v-list>
@@ -120,7 +124,11 @@
       methods: {
          taskDone(task) {
             var taskDone = confirm(this.$i18n.t("task_list.task_done_question"));
-            if (taskDone) this.sendSmsReport("task_list.task_done", task.name);
+            if (taskDone) {
+               this.sendSmsReport("task_list.task_done", task.name);
+               task.status = 'done';
+               localStorage.dailyTasks = JSON.stringify(this.sharedData.dailyTasks);
+            }
          },
          panic() {
             var sendPanic = confirm(this.$i18n.t("panic.panic_question"));
@@ -156,6 +164,7 @@
    }
    /*
       todo:
+      - task status checking
       - transitions & animations
       - password as hash
       - add vuex ?
@@ -167,5 +176,27 @@
    .v-list a {
       text-decoration: none;
       color: white;
+   }
+
+   .bounce-enter-active {
+      animation: bounce-in .5s;
+   }
+
+   .bounce-leave-active {
+      animation: bounce-in .5s reverse;
+   }
+
+   @keyframes bounce-in {
+      0% {
+         transform: scale(0);
+      }
+
+      50% {
+         transform: scale(1.5);
+      }
+
+      100% {
+         transform: scale(1);
+      }
    }
 </style>
