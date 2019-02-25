@@ -164,7 +164,6 @@
    }
    /*
       todo:
-      - task status checking
       - transitions & animations
       - password as hash
       - add vuex ?

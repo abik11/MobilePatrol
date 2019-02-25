@@ -13,6 +13,7 @@
          return {
             lastCheckHour: null,
             lastCheckMinute: null,
+            checkingInterval: 1,
             sharedData: DataStore.state
          };
       },
@@ -25,13 +26,12 @@
                var lastCheck = `${this.lastCheckHour}:${this.lastCheckMinute}`;
                console.log(`Executing interval - last check: ${lastCheck}`);
 
-               if (lastCheck == this.sharedData.taskResetHour)
-                  _.forEach(this.sharedData.dailyTasks, task => {
-                     task.status = 'undone';
-                  });
+               var taskToReport = _.filter(this.sharedData.dailyTasks,
+                  task => task.time < lastCheck && task.status == 'undone');
+               console.log(taskToReport);
+               
+            }, this.checkingInterval * 60000);
 
-               //here checking tasks will be done
-            }, 60000);
             this.sharedData.bgTaskActive = true;
             console.log('Background task has started.');
          },
@@ -47,6 +47,12 @@
          if (localStorage.dailyTasks) this.sharedData.dailyTasks = JSON.parse(localStorage.dailyTasks);
          if (localStorage.reportNumber) this.sharedData.reportNumber = localStorage.reportNumber;
          if (localStorage.settingsPassword) this.sharedData.settingsPassword = localStorage.settingsPassword;
+
+         var today = new Date().getDay();
+         if (!localStorage.today || localStorage.today != today) {
+            _.forEach(this.sharedData.dailyTasks, task => task.status = 'undone');
+         }
+         localStorage.today = today;
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();

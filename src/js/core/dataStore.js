@@ -11,7 +11,6 @@
       ],
       reportNumber: '',
       currentUser: '',
-      taskResetHour: '01:00',
       bgTaskActive: false,
       bgTaskHandler: null
    }
