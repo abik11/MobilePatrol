@@ -102,12 +102,13 @@
 <script>
    import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
+   import SMSMixin from '../core/smsMixin';
    import LoginBox from './auth/loginBox.vue';
 
    export default {
       name: 'home',
       components: { LoginBox },
-      mixins: [ErrorToastMixin],
+      mixins: [ErrorToastMixin, SMSMixin],
       data() {
          return {
             nav: false,
@@ -133,25 +134,6 @@
          panic() {
             var sendPanic = confirm(this.$i18n.t("panic.panic_question"));
             if (sendPanic) this.sendSmsReport("panic.panic_send");
-         },
-         sendSmsReport(titleStringName, optionalContent) {
-            if (this.sharedData.reportNumber.length == 0) {
-               this.error = this.$i18n.t('common.report_number_error');
-               return;
-            }
-
-            var title = this.$i18n.t(titleStringName);
-            var time = new Date().toLocaleTimeString();
-            var separator = "\n";
-            if (optionalContent == void 0) {
-               optionalContent = '';
-               separator = '';
-            }
-
-            var message = `${title}\n${this.sharedData.currentUser}\n${time}${separator}${optionalContent}`;
-
-            this.$device.sendSms
-               (this.sharedData.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
          },
          onMessageSent() {
             this.toast = true;

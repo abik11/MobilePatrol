@@ -28,6 +28,7 @@
       task_list: {
          task_done_question: 'Jesteś pewien, że wykonałeś to zadanie?',
          task_done: 'Zadanie wykonane',
+         task_undone: 'Zadanie nie zostało wykonane'
       },
       panic: {
          panic_question: 'Jesteś pewien, że chcesz zgłosić alarm?',
