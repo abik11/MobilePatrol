@@ -146,6 +146,7 @@
    }
    /*
       todo:
+      - repair menu when there are many task
       - transitions & animations
       - password as hash
       - add vuex ?

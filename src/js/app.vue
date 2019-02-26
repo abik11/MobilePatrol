@@ -19,8 +19,6 @@
       mixins: [ErrorToastMixin, SMSMixin],
       data() {
          return {
-            lastCheckHour: null,
-            lastCheckMinute: null,
             checkingInterval: 10,
             sharedData: DataStore.state
          };
@@ -29,9 +27,7 @@
          startBgAction() {
             this.sharedData.bgTaskHandler = setInterval(() => {
                var checkTime = new Date();
-               this.lastCheckHour = checkTime.getHours();
-               this.lastCheckMinute = checkTime.getMinutes();
-               var lastCheck = `${this.lastCheckHour}:${this.lastCheckMinute}`;
+               var lastCheck = `${checkTime.getHours()}:${checkTime.getMinutes()}`;
 
                var taskToReport = this.sharedData.dailyTasks.filter
                   (task => task.time < lastCheck && task.status == 'undone');
@@ -48,6 +44,8 @@
                      else
                         task.status = 'undone'
                   });
+
+                  localStorage.today = checkTime.getDay();
                }
             }, 60000);
 
@@ -61,12 +59,20 @@
             cordova.plugins.backgroundMode.un('disable', this.endBgAction);
             this.sharedData.bgTaskActive = false;
             console.log('Background task has stopped.');
+         },
+         checkOnStart() {
+            var checkDay = new Date().getDay();
+            if (!localStorage.today || localStorage.today != checkDay) {
+               this.sharedData.dailyTasks.forEach(task => task.status = 'undone');
+               localStorage.today = checkDay;
+            }
          }
       },
       created() {
          if (localStorage.dailyTasks) this.sharedData.dailyTasks = JSON.parse(localStorage.dailyTasks);
          if (localStorage.reportNumber) this.sharedData.reportNumber = localStorage.reportNumber;
          if (localStorage.settingsPassword) this.sharedData.settingsPassword = localStorage.settingsPassword;
+         this.checkOnStart();
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();
