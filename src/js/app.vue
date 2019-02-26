@@ -29,29 +29,34 @@
          startBgAction() {
             this.sharedData.bgTaskHandler = setInterval(() => {
                var checkTime = new Date();
-
-               if (checkTime.getHours() == 0 && this.lastCheckHour == 23) {
-                  var taskToReset = _.filter(this.sharedData.dailyTasks,
-                     task => task.time > `00:${this.checkingInterval}`);
-                  _.forEach(taskToReset, task => task.status = 'undone');
-               }
-
                this.lastCheckHour = checkTime.getHours();
                this.lastCheckMinute = checkTime.getMinutes();
                var lastCheck = `${this.lastCheckHour}:${this.lastCheckMinute}`;
 
-               var taskToReport = _.filter(this.sharedData.dailyTasks,
-                  task => task.time < lastCheck && task.status == 'undone');
-
-               _.forEach(taskToReport,
-                  task => this.sendSmsReport("task_list.task_undone", task.name));
+               var taskToReport = this.sharedData.dailyTasks.filter
+                  (task => task.time < lastCheck && task.status == 'undone');
+               taskToReport.forEach
+                  (task => this.sendSmsReport("task_list.task_undone", task.name));
             }, this.checkingInterval * 60000);
+
+            this.sharedData.bgMinuteTaskHandler = setInterval(() => {
+               var checkTime = new Date();
+               if (checkTime.getHours() == 0 && checkTime.getMinutes == 0) {
+                  this.sharedData.dailyTasks.forEach(task => {
+                     if (task.status == 'undone')
+                        this.sendSmsReport("task_list.task_undone", task.name);
+                     else
+                        task.status = 'undone'
+                  });
+               }
+            }, 60000);
 
             this.sharedData.bgTaskActive = true;
             console.log('Background task has started.');
          },
          endBgAction() {
-            clearInterval(this.sharedData.taskHandler);
+            clearInterval(this.sharedData.bgTaskHandler);
+            clearInterval(this.sharedData.bgMinuteTaskHandler);
             cordova.plugins.backgroundMode.un('enable', this.startBgAction);
             cordova.plugins.backgroundMode.un('disable', this.endBgAction);
             this.sharedData.bgTaskActive = false;
@@ -62,12 +67,6 @@
          if (localStorage.dailyTasks) this.sharedData.dailyTasks = JSON.parse(localStorage.dailyTasks);
          if (localStorage.reportNumber) this.sharedData.reportNumber = localStorage.reportNumber;
          if (localStorage.settingsPassword) this.sharedData.settingsPassword = localStorage.settingsPassword;
-
-         //var today = new Date().getDay();
-         //if (!localStorage.today || localStorage.today != today) {
-         //   _.forEach(this.sharedData.dailyTasks, task => task.status = 'undone');
-         //}
-         //localStorage.today = today;
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();

@@ -12,6 +12,7 @@
       reportNumber: '',
       currentUser: '',
       bgTaskActive: false,
-      bgTaskHandler: null
+      bgTaskHandler: null,
+      bgMinuteTaskHandler: null
    }
 }
