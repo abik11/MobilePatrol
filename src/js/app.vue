@@ -37,7 +37,7 @@
 
             this.sharedData.bgMinuteTaskHandler = setInterval(() => {
                var checkTime = new Date();
-               if (checkTime.getHours() == 0 && checkTime.getMinutes == 0) {
+               if (checkTime.getHours() == 0 && checkTime.getMinutes() == 0) {
                   this.sharedData.dailyTasks.forEach(task => {
                      if (task.status == 'undone')
                         this.sendSmsReport("task_list.task_undone", task.name);
