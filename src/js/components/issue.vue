@@ -1,26 +1,28 @@
 ﻿<template>
-   <v-layout row wrap>
-      <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
-         {{ error }}
-         <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
-      </v-snackbar>
+   <transition name="fade" mode="out-in">
+      <v-layout row wrap>
+         <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
+            {{ error }}
+            <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
+         </v-snackbar>
 
-      <v-flex xs6 text-xs-left>
-         <v-btn outline color="primary" @click="captureImage">
-            <v-icon>photo_camera</v-icon>
-            {{$t('issue.make_picture')}}
-         </v-btn>
-      </v-flex>
-      <v-flex xs6 text-xs-right>
-         <v-btn outline color="primary" @click="sendImage" v-if="imageCaptured">
-            <v-icon>send</v-icon>
-            {{$t('common.send')}}
-         </v-btn>
-      </v-flex>
-      <v-flex xs12 text-xs-center>
-         <img class="img" :src="imageUri" />
-      </v-flex>
-   </v-layout>
+         <v-flex xs6 text-xs-left>
+            <v-btn outline color="primary" @click="captureImage">
+               <v-icon>photo_camera</v-icon>
+               {{$t('issue.make_picture')}}
+            </v-btn>
+         </v-flex>
+         <v-flex xs6 text-xs-right>
+            <v-btn outline color="primary" @click="sendImage" v-if="imageCaptured">
+               <v-icon>send</v-icon>
+               {{$t('common.send')}}
+            </v-btn>
+         </v-flex>
+         <v-flex xs12 text-xs-center>
+            <img class="img" :src="imageUri" />
+         </v-flex>
+      </v-layout>
+   </transition>
 </template>
 
 <script>
