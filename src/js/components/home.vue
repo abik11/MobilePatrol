@@ -14,7 +14,7 @@
                   <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
                </v-snackbar>
 
-               <v-navigation-drawer v-model="nav" absolute dark temporary fixed width="220">
+               <v-navigation-drawer v-model="nav" dark temporary fixed width="220">
                   <v-list class="pt-0">
 
                      <v-list-tile @click="panic">
@@ -107,7 +107,7 @@
    import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
    import SMSMixin from '../core/smsMixin';
-   import LoginBox from './auth/loginBox.vue';
+   import LoginBox from '../auth/loginBox.vue';
 
    export default {
       name: 'home',
@@ -154,7 +154,6 @@
    }
    /*
       todo:
-      - repair menu when there are many task
       - password as hash
       - add vuex ?
       - add dexie ?

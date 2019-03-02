@@ -32,7 +32,7 @@
 </template>
 
 <script>
-   import DataStore from '../../core/dataStore';
+   import DataStore from '../core/dataStore';
 
    export default {
       name: 'setPassword',

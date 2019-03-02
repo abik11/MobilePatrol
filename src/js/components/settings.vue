@@ -43,6 +43,12 @@
                   </v-text-field>
                </v-flex>
 
+               <v-flex xs12 class="text-xs-center" mb-3>
+                  <v-btn color="primary" @click="resetPassword">
+                     {{ $t('settings.change_pass') }}
+                  </v-btn>
+               </v-flex>
+
                <v-flex xs12>
                   <v-list two-line>
                      <template v-for="(task, index) in dailyTasks">
@@ -87,8 +93,8 @@
 <script>
    import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
-   import LoginBox from './auth/loginBox.vue';
-   import PasswordBox from './auth/passwordBox.vue';
+   import LoginBox from '../auth/loginBox.vue';
+   import PasswordBox from '../auth/passwordBox.vue';
 
    export default {
       name: 'settings',
@@ -120,6 +126,10 @@
                this.authorized = true;
             else
                this.error = this.$i18n.t('login.wrong_password');
+         },
+         resetPassword() {
+            this.authorized = '';
+            this.sharedData.settingsPassword = '';
          },
          addTask() {
             this.editMode = 'add';

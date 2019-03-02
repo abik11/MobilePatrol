@@ -35,7 +35,7 @@
 </template>
 
 <script>
-   import DataStore from '../../core/dataStore';
+   import DataStore from '../core/dataStore';
 
    export default {
       name: 'loginBox',
@@ -49,6 +49,7 @@
          return {
             credentials: '',
             show: false,
+            defaultPasswordLength: 5,
             sharedData: DataStore.state
          };
       },
@@ -67,7 +68,7 @@
             else {
                var title = this.$i18n.t('login.new_password');
                var time = new Date().toLocaleTimeString();
-               var newPassword = 'dupa';
+               var newPassword = this.generateRandomPassword(this.defaultPasswordLength);
                var message = `${title}\n${this.sharedData.currentUser}\n${time}\n${newPassword}`;
 
                this.$device.sendSms
@@ -76,6 +77,15 @@
                localStorage.settingsPassword = newPassword;
                this.sharedData.settingsPassword = newPassword;
             }
+         },
+         generateRandomPassword(passwordLength) {
+            var text = "";
+            var chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+            for (var i = 0; i < passwordLength; i++)
+               text += chars.charAt(Math.floor(Math.random() * chars.length));
+
+            return text;
          }
       }
    }
