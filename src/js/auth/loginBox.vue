@@ -5,7 +5,7 @@
             <v-layout align-center justify-center column fill-height>
                <v-flex xs12 v-if="!secure">
                   <v-text-field color="primary"
-                                v-model="credentials" required
+                                v-model="login" required
                                 :label="$t('login.give_name')"
                                 :hint="$t('login.hint')"
                                 prepend-icon="person">
@@ -13,7 +13,7 @@
                </v-flex>
                <v-flex xs12 v-else>
                   <v-text-field color="primary"
-                                v-model="credentials" required
+                                v-model="pass" required
                                 :label="$t('login.give_password')"
                                 :append-icon="show ? 'visibility_off' : 'visibility'"
                                 :type="show ? 'text' : 'password'"
@@ -36,9 +36,11 @@
 
 <script>
    import DataStore from '../core/dataStore';
+   import SHAMixin from './shaMixin.js';
 
    export default {
       name: 'loginBox',
+      mixins: [SHAMixin],
       props: {
          type: {
             type: String,
@@ -47,7 +49,8 @@
       },
       data() {
          return {
-            credentials: '',
+            login: '',
+            pass: '',
             show: false,
             defaultPasswordLength: 5,
             sharedData: DataStore.state
@@ -56,6 +59,9 @@
       computed: {
          secure() {
             return this.type == 'password' || this.type == 'pass';
+         },
+         credentials() {
+            return this.secure ? this.sha256(this.pass) : this.login;
          }
       },
       methods: {
@@ -74,8 +80,8 @@
                this.$device.sendSms
                   (this.sharedData.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
 
-               localStorage.settingsPassword = newPassword;
-               this.sharedData.settingsPassword = newPassword;
+               localStorage.settingsPassword = this.sha256(newPassword);
+               this.sharedData.settingsPassword = this.sha256(newPassword);
             }
          },
          generateRandomPassword(passwordLength) {

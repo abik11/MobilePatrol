@@ -154,7 +154,6 @@
    }
    /*
       todo:
-      - password as hash
       - add vuex ?
       - add dexie ?
    */

@@ -8,13 +8,6 @@ VueCordova.install = function (Vue, options) {
       defaultErrorHandler(error) {
          console.error(error);
       },
-      //barcodeScannerConfig: {
-      //   preferFrontCamera: false,
-      //   showFlipCameraButton: false,
-      //   prompt: "Scan barcode",
-      //   resultDisplayDuration: 500,
-      //   formats: "QR_CODE,DATA_MATRIX,CODE_128,CODE_39,CODE_93,UPC_E,UPC_A,EAN_8,EAN_13"
-      //},
       cameraConfig: {
          quality: 50,
          targetWidth: 800,
@@ -31,16 +24,6 @@ VueCordova.install = function (Vue, options) {
    };
 
    var device = {
-      //getMacAddress: function (success, error) {
-      //   if (typeof (error) === undefined)
-      //      error = defaults.defaultErrorHandler;
-      //   cordova.exec(success, error, 'getmac', 'getMacAddress', []);
-      //},
-
-      //checkWifiConnection() {
-      //   return navigator.connection.type == Connection.WIFI;
-      //},
-
       getSmsConfig() {
          return defaults.smsConfig;
       },
@@ -77,18 +60,6 @@ VueCordova.install = function (Vue, options) {
             [convertPhoneToArray(number), message, image, method]
          );
       },
-
-      //getBarcodeScannerConfig() {
-      //   return defaults.barcodeScannerConfig;
-      //},
-
-      //scanBarcode(success, error, options) {
-      //   if (typeof (error) === undefined)
-      //      error = defaults.defaultErrorHandler;
-      //   if (typeof (options) === undefined)
-      //      options = defaults.barcodeScannerConfig;
-      //   cordova.plugins.barcodeScanner.scan(success, error, options);
-      //},
 
       getCameraConfig() {
          return defaults.cameraConfig;

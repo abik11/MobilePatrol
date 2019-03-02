@@ -33,9 +33,11 @@
 
 <script>
    import DataStore from '../core/dataStore';
+   import SHAMixin from './shaMixin.js';
 
    export default {
       name: 'setPassword',
+      mixins: [SHAMixin],
       data() {
          return {
             pass1: '',
@@ -49,8 +51,8 @@
       methods: {
          savePassword() {
             if (this.pass1 == this.pass2) {
-               localStorage.settingsPassword = this.pass1;
-               this.sharedData.settingsPassword = this.pass1;
+               localStorage.settingsPassword = this.sha256(this.pass1);
+               this.sharedData.settingsPassword = this.sha256(this.pass1);
             }
          }
       }
