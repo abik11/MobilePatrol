@@ -10,7 +10,6 @@
 </template>
 
 <script>
-   import DataStore from './core/dataStore';
    import ErrorToastMixin from './core/errorToastMixin';
    import SMSMixin from './core/smsMixin';
 
@@ -20,7 +19,7 @@
       data() {
          return {
             checkingInterval: 10,
-            sharedData: DataStore.state
+            sharedData: this.$store.state
          };
       },
       methods: {
@@ -32,7 +31,10 @@
                var taskToReport = this.sharedData.dailyTasks.filter
                   (task => task.time < lastCheck && task.status == 'undone');
                taskToReport.forEach
-                  (task => this.sendSmsReport("task_list.task_undone", task.name));
+                  (task => {
+                     this.sendSmsReport("task_list.task_undone", task.name)
+                     setTimeout(() => { }, 500);
+                  });
             }, this.checkingInterval * 60000);
 
             this.sharedData.bgMinuteTaskHandler = setInterval(() => {
@@ -45,6 +47,7 @@
                         task.status = 'undone'
                   });
 
+                  localStorage.dailyTasks = JSON.stringify(this.sharedData.dailyTasks);
                   localStorage.today = checkTime.getDay();
                }
             }, 60000);

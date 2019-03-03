@@ -35,7 +35,6 @@
 </template>
 
 <script>
-   import DataStore from '../core/dataStore';
    import SHAMixin from './shaMixin.js';
 
    export default {
@@ -53,7 +52,7 @@
             pass: '',
             show: false,
             defaultPasswordLength: 5,
-            sharedData: DataStore.state
+            sharedData: this.$store.state
          };
       },
       computed: {

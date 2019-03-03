@@ -104,7 +104,6 @@
 </template>
 
 <script>
-   import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
    import SMSMixin from '../core/smsMixin';
    import LoginBox from '../auth/loginBox.vue';
@@ -118,7 +117,7 @@
             nav: false,
             toast: false,
             toastTimeout: 2000,
-            sharedData: DataStore.state
+            sharedData: this.$store.state
          }
       },
       computed: {
@@ -154,7 +153,6 @@
    }
    /*
       todo:
-      - add vuex ?
       - add dexie ?
    */
 </script>

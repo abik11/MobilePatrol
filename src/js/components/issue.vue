@@ -26,7 +26,6 @@
 </template>
 
 <script>
-   import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
 
    export default {
@@ -36,7 +35,7 @@
          return {
             imageUri: '',
             imgPrefix: 'data:image/jpeg;base64,',
-            sharedData: DataStore.state
+            sharedData: this.$store.state
          }
       },
       computed: {

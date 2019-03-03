@@ -32,7 +32,6 @@
 </template>
 
 <script>
-   import DataStore from '../core/dataStore';
    import SHAMixin from './shaMixin.js';
 
    export default {
@@ -45,7 +44,7 @@
             show1: false,
             show2: false,
             matchingPasswords: v => v == this.pass1 || this.$i18n.t('login.wrong_password'),
-            sharedData: DataStore.state
+            sharedData: this.$store.state
          };
       },
       methods: {

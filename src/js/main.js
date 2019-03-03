@@ -8,6 +8,7 @@ import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
 import Locale from './language/vue-i18n-locales.js';
 import '../css/main.scss';
+import store from './store';
 import theme from './theme.js';
 //---
 import App from './app.vue';
@@ -47,7 +48,7 @@ import Settings from './components/settings.vue';
          messages: Locale
       });
 
-      new Vue({ components: { App }, router, i18n }).$mount("#app");
+      new Vue({ components: { App }, router, i18n, store }).$mount("#app");
    }
 
    function onPause() { }

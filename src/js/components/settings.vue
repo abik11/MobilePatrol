@@ -91,7 +91,6 @@
 </template>
 
 <script>
-   import DataStore from '../core/dataStore';
    import ErrorToastMixin from '../core/errorToastMixin';
    import LoginBox from '../auth/loginBox.vue';
    import PasswordBox from '../auth/passwordBox.vue';
@@ -112,7 +111,7 @@
             taskId: 0,
             editMode: '',
             authorized: false,
-            sharedData: DataStore.state
+            sharedData: this.$store.state
          }
       },
       computed: {
