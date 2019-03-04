@@ -35,11 +35,11 @@
 </template>
 
 <script>
-   import SHAMixin from './shaMixin.js';
+   import sha256 from './sha256';
+   import { mapState } from 'vuex';
 
    export default {
       name: 'loginBox',
-      mixins: [SHAMixin],
       props: {
          type: {
             type: String,
@@ -51,16 +51,19 @@
             login: '',
             pass: '',
             show: false,
-            defaultPasswordLength: 5,
-            sharedData: this.$store.state
+            defaultPasswordLength: 5
          };
       },
       computed: {
+         ...mapState([
+            'currentUser',
+            'reportNumber'
+         ]),
          secure() {
             return this.type == 'password' || this.type == 'pass';
          },
          credentials() {
-            return this.secure ? this.sha256(this.pass) : this.login;
+            return this.secure ? sha256(this.pass) : this.login;
          }
       },
       methods: {
@@ -68,19 +71,18 @@
             this.$emit('login', this.credentials);
          },
          resetPassword() {
-            if (this.sharedData.reportNumber == '')
-               this.sharedData.settingsPassword = '';
+            if (this.reportNumber == '')
+               this.$store.commit('setSettingsPassword', '')
             else {
                var title = this.$i18n.t('login.new_password');
                var time = new Date().toLocaleTimeString();
                var newPassword = this.generateRandomPassword(this.defaultPasswordLength);
-               var message = `${title}\n${this.sharedData.currentUser}\n${time}\n${newPassword}`;
+               var message = `${title}\n${this.currentUser}\n${time}\n${newPassword}`;
 
                this.$device.sendSms
-                  (this.sharedData.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
+                  (this.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
 
-               localStorage.settingsPassword = this.sha256(newPassword);
-               this.sharedData.settingsPassword = this.sha256(newPassword);
+               this.$store.dispatch('setSettingsPassword', sha256(newPassword));
             }
          },
          generateRandomPassword(passwordLength) {

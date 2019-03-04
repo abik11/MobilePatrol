@@ -62,7 +62,7 @@
 
                <v-flex xs12>
                   <v-list two-line>
-                     <template v-for="(task, index) in sharedData.dailyTasks">
+                     <template v-for="(task, index) in dailyTasks">
                         <v-divider v-if="index > 0" :key="-index"></v-divider>
                         <v-list-tile :key="index">
                            <v-list-tile-content>
@@ -91,7 +91,7 @@
                            </v-btn>
                         </v-flex>
                         <v-flex xs9 pr-4 class="grey--text text--darken-1 text-xs-right text-truncate">
-                           {{$t('login.logged_as')}}: {{sharedData.currentUser}}
+                           {{$t('login.logged_as')}}: {{currentUser}}
                         </v-flex>
                      </v-layout>
                   </v-card>
@@ -107,6 +107,7 @@
    import ErrorToastMixin from '../core/errorToastMixin';
    import SMSMixin from '../core/smsMixin';
    import LoginBox from '../auth/loginBox.vue';
+   import { mapState, mapGetters } from 'vuex';
 
    export default {
       name: 'home',
@@ -116,22 +117,24 @@
          return {
             nav: false,
             toast: false,
-            toastTimeout: 2000,
-            sharedData: this.$store.state
+            toastTimeout: 2000
          }
       },
       computed: {
-         loggedIn() {
-            return this.sharedData.currentUser != '';
-         }
+         ...mapState([
+            'dailyTasks',
+            'currentUser'
+         ]),
+         ...mapGetters([
+            'loggedIn'
+         ])
       },
       methods: {
          taskDone(task) {
             var taskDone = confirm(this.$i18n.t("task_list.task_done_question"));
             if (taskDone) {
                this.sendSmsReport("task_list.task_done", task.name);
-               task.status = 'done';
-               localStorage.dailyTasks = JSON.stringify(this.sharedData.dailyTasks);
+               this.$store.dispatch('setTaskStatus', { task, status: 'done' });
             }
          },
          panic() {
@@ -143,11 +146,11 @@
             console.log("SMS has been sent");
          },
          onUserLoggedin(userName) {
-            this.sharedData.currentUser = userName;
+            this.$store.commit('setCurrentUser', userName);
          },
          onUserLogout() {
             this.nav = false;
-            this.sharedData.currentUser = ''
+            this.$store.commit('setCurrentUser', '');
          }
       }
    }

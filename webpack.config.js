@@ -21,17 +21,14 @@ module.exports = {
          {
             test: /\.js$/,
             exclude: /node_modules/,
-            loader: 'babel-loader',
-            options: {
-               presets: ['es2015']
-            }
+            loader: 'babel-loader?presets[]=es2015&plugins[]=transform-object-rest-spread',
          },
          {
             test: /\.vue$/,
             loader: 'vue-loader',
             options: {
                loaders: {
-                  js: 'babel-loader?presets[]=es2015',
+                  js: 'babel-loader?presets[]=es2015&plugins[]=transform-object-rest-spread',
                   scss: 'vue-style-loader!css-loader!sass-loader',
                   sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
                }

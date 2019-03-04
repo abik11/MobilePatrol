@@ -27,6 +27,7 @@
 
 <script>
    import ErrorToastMixin from '../core/errorToastMixin';
+   import { mapState } from 'vuex';
 
    export default {
       name: 'issue',
@@ -34,11 +35,14 @@
       data: function () {
          return {
             imageUri: '',
-            imgPrefix: 'data:image/jpeg;base64,',
-            sharedData: this.$store.state
+            imgPrefix: 'data:image/jpeg;base64,'
          }
       },
       computed: {
+         ...mapState([
+            'reportNumber',
+            'currentUser'
+         ]),
          imageCaptured() {
             return this.imageUri.length != 0;
          }
@@ -54,19 +58,19 @@
             });
          },
          sendImage() {
-            if (this.sharedData.reportNumber.length == 0) {
+            if (this.reportNumber.length == 0) {
                this.error = this.$i18n.t('common.report_number_error');
                return;
             }
 
             var time = new Date().toLocaleTimeString();
             var title = this.$i18n.t("issue.issue_raport");
-            var message = `${title}\n${this.sharedData.currentUser}\n${time}`;
+            var message = `${title}\n${this.currentUser}\n${time}`;
 
             this.getImageAsBase64()
                .then(imgBase64 => {
                   this.$device.sendMms(
-                     this.sharedData.reportNumber,
+                     this.reportNumber,
                      message,
                      `${this.imgPrefix}${imgBase64}`,
                      this.onPictureSent,

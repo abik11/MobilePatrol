@@ -32,11 +32,10 @@
 </template>
 
 <script>
-   import SHAMixin from './shaMixin.js';
+   import sha256 from './sha256';
 
    export default {
       name: 'setPassword',
-      mixins: [SHAMixin],
       data() {
          return {
             pass1: '',
@@ -44,15 +43,12 @@
             show1: false,
             show2: false,
             matchingPasswords: v => v == this.pass1 || this.$i18n.t('login.wrong_password'),
-            sharedData: this.$store.state
          };
       },
       methods: {
          savePassword() {
-            if (this.pass1 == this.pass2) {
-               localStorage.settingsPassword = this.sha256(this.pass1);
-               this.sharedData.settingsPassword = this.sha256(this.pass1);
-            }
+            if (this.pass1 == this.pass2)
+               this.$store.dispatch('setSettingsPassword', sha256(this.pass1));
          }
       }
    }

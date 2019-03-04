@@ -1,7 +1,13 @@
-﻿var SMSMixin = {
+﻿import { mapState } from 'vuex';
+
+var SMSMixin = {
+   computed: mapState([
+      'reportNumber',
+      'currentUser'
+   ]),
    methods: {
       sendSmsReport(titleStringName, optionalContent) {
-         if (this.sharedData.reportNumber.length == 0) {
+         if (this.reportNumber.length == 0) {
             this.error = this.$i18n.t('common.report_number_error');
             return;
          }
@@ -14,10 +20,10 @@
             separator = '';
          }
 
-         var message = `${title}\n${this.sharedData.currentUser}\n${time}${separator}${optionalContent}`;
+         var message = `${title}\n${this.currentUser}\n${time}${separator}${optionalContent}`;
 
          this.$device.sendSms
-            (this.sharedData.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
+            (this.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
       }
    }
 };

@@ -37,7 +37,7 @@
             <v-layout v-else column>
                <v-flex xs12 text-xs-left>
                   <v-text-field box color="primary"
-                                v-model="reportNumber"
+                                v-model="tmpReportNumber"
                                 :label="$t('settings.phone')"
                                 prepend-inner-icon="phone">
                   </v-text-field>
@@ -51,7 +51,7 @@
 
                <v-flex xs12>
                   <v-list two-line>
-                     <template v-for="(task, index) in dailyTasks">
+                     <template v-for="(task, index) in tmpDailyTasks">
                         <v-divider v-if="index > 0" :key="-index"></v-divider>
                         <v-list-tile :key="index">
                            <v-list-tile-content>
@@ -62,7 +62,7 @@
                            <v-btn color="primary" outline fab @click="editTask(task)">
                               <v-icon>edit</v-icon>
                            </v-btn>
-                           <v-btn color="primary" outline fab @click="dailyTasks.splice(index, 1)">
+                           <v-btn color="primary" outline fab @click="tmpDailyTasks.splice(index, 1)">
                               <v-icon>close</v-icon>
                            </v-btn>
                         </v-list-tile>
@@ -94,6 +94,7 @@
    import ErrorToastMixin from '../core/errorToastMixin';
    import LoginBox from '../auth/loginBox.vue';
    import PasswordBox from '../auth/passwordBox.vue';
+   import { mapState, mapGetters } from 'vuex';
 
    export default {
       name: 'settings',
@@ -104,37 +105,39 @@
             toast: false,
             toastTimeout: 2000,
             dialog: false,
-            reportNumber: '',
-            dailyTasks: [],
+            tmpReportNumber: '',
+            tmpDailyTasks: [],
             taskName: '',
             taskTime: null,
             taskId: 0,
             editMode: '',
-            authorized: false,
-            sharedData: this.$store.state
+            authorized: false
          }
       },
       computed: {
-         passwordSet() {
-            return this.sharedData.settingsPassword != '';
-         }
+         ...mapState([
+            'dailyTasks',
+            'settingsPassword',
+            'reportNumber'
+         ]),
+         ...mapGetters(['passwordSet'])
       },
       methods: {
          onUserAuthorize(password) {
-            if (password == this.sharedData.settingsPassword)
+            if (password == this.settingsPassword)
                this.authorized = true;
             else
                this.error = this.$i18n.t('login.wrong_password');
          },
          resetPassword() {
             this.authorized = '';
-            this.sharedData.settingsPassword = '';
+            this.$store.commit('setSettingsPassword', '');
          },
          addTask() {
             this.editMode = 'add';
             this.taskName = '';
             this.taskTime = '00:00';
-            var task = _.maxBy(this.dailyTasks, 'id');
+            var task = _.maxBy(this.tmpDailyTasks, 'id');
             this.taskId = task ? task.id + 1 : 0;
             this.dialog = true;
          },
@@ -148,13 +151,13 @@
          saveTasks() {
             if (this.editMode == 'add') {
                if (this.taskName != '') {
-                  this.dailyTasks.push({
+                  this.tmpDailyTasks.push({
                      name: this.taskName,
                      time: this.taskTime,
                      id: this.taskId,
                      status: 'undone'
                   });
-                  this.dailyTasks = _.orderBy(this.dailyTasks, 'time');
+                  this.tmpDailyTasks = _.orderBy(this.tmpDailyTasks, 'time');
                   this.dialog = false;
                }
                else {
@@ -163,10 +166,10 @@
             }
             else if (this.editMode == 'edit') {
                if (this.taskName != '') {
-                  var editedTask = _.find(this.dailyTasks, ['id', this.taskId]);
+                  var editedTask = _.find(this.tmpDailyTasks, ['id', this.taskId]);
                   editedTask.name = this.taskName;
                   editedTask.time = this.taskTime;
-                  this.dailyTasks = _.orderBy(this.dailyTasks, 'time');
+                  this.tmpDailyTasks = _.orderBy(this.tmpDailyTasks, 'time');
                   this.dialog = false;
                }
                else {
@@ -175,16 +178,14 @@
             }
          },
          saveSettings() {
-            this.sharedData.reportNumber = this.reportNumber;
-            localStorage.reportNumber = this.reportNumber;
-            this.sharedData.dailyTasks = _.clone(this.dailyTasks);
-            localStorage.dailyTasks = JSON.stringify(this.dailyTasks);
+            this.$store.dispatch('setReportNumber', this.tmpReportNumber);
+            this.$store.dispatch('setDailyTasks', this.tmpDailyTasks);
             this.toast = true;
          }
       },
       created() {
-         this.reportNumber = this.sharedData.reportNumber;
-         this.dailyTasks = _.clone(this.sharedData.dailyTasks);
+         this.tmpReportNumber = this.reportNumber;
+         this.tmpDailyTasks = _.cloneDeep(this.dailyTasks);
       }
    }
 </script>
