@@ -121,10 +121,10 @@
          }
       },
       computed: {
-         ...mapState([
-            'dailyTasks',
-            'currentUser'
-         ]),
+         ...mapState({
+            dailyTasks: state => state.tasks.dailyTasks,
+            currentUser: state => state.currentUser
+         }),
          ...mapGetters([
             'loggedIn'
          ])
@@ -134,7 +134,7 @@
             var taskDone = confirm(this.$i18n.t("task_list.task_done_question"));
             if (taskDone) {
                this.sendSmsReport("task_list.task_done", task.name);
-               this.$store.dispatch('setTaskStatus', { task, status: 'done' });
+               this.$store.dispatch('tasks/setTaskStatus', { task, status: 'done' });
             }
          },
          panic() {
@@ -152,6 +152,9 @@
             this.nav = false;
             this.$store.commit('setCurrentUser', '');
          }
+      },
+      created() {
+         console.log(this.dailyTasks);
       }
    }
    /*

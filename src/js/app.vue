@@ -25,8 +25,8 @@
          };
       },
       computed: mapGetters([
-         'tasksToReport',
-         'undoneTasks'
+         'tasks/tasksToReport',
+         'tasks/undoneTasks'
       ]),
       methods: {
          startBgAction() {
@@ -46,7 +46,7 @@
                      this.sendSmsReport("task_list.task_undone", task.name);
                      setTimeout(() => { }, 500);
                   });
-                  this.$store.dispatch('resetTasksStatus', checkTime);
+                  this.$store.dispatch('tasks/resetTasksStatus', checkTime);
                }
             }, minute);
             console.log('Background task has started.');
@@ -60,8 +60,8 @@
          }
       },
       created() {
-         this.$store.commit('readInitialState');
-         this.$store.dispatch('checkInitialState');
+         this.$store.commit('readInitialSettings');
+         this.$store.dispatch('tasks/readInitialTasks');
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();

@@ -115,11 +115,11 @@
          }
       },
       computed: {
-         ...mapState([
-            'dailyTasks',
-            'settingsPassword',
-            'reportNumber'
-         ]),
+         ...mapState({
+            dailyTasks: state => state.tasks.dailyTasks,
+            settingsPassword: state => state.settingsPassword,
+            reportNumber: state => state.reportNumber
+         }),
          ...mapGetters(['passwordSet'])
       },
       methods: {
@@ -179,7 +179,7 @@
          },
          saveSettings() {
             this.$store.dispatch('setReportNumber', this.tmpReportNumber);
-            this.$store.dispatch('setDailyTasks', this.tmpDailyTasks);
+            this.$store.dispatch('tasks/setDailyTasks', this.tmpDailyTasks);
             this.toast = true;
          }
       },
