@@ -152,9 +152,6 @@
             this.nav = false;
             this.$store.commit('setCurrentUser', '');
          }
-      },
-      created() {
-         console.log(this.dailyTasks);
       }
    }
    /*

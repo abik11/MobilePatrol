@@ -24,10 +24,10 @@
             bgMinuteTaskHandler: null
          };
       },
-      computed: mapGetters([
-         'tasks/tasksToReport',
-         'tasks/undoneTasks'
-      ]),
+      computed: mapGetters({
+         tasksToReport: 'tasks/tasksToReport',
+         undoneTasks: 'tasks/undoneTasks'
+      }),
       methods: {
          startBgAction() {
             const minute = 60000;
