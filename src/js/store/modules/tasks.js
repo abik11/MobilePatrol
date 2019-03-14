@@ -9,7 +9,7 @@
    },
    getters: {
       undoneTasks: state => {
-         return state.dailyTasks.forEach(task => task.status == 'undone');
+         return state.dailyTasks.filter(task => task.status == 'undone');
       },
       tasksToReport: state => {
          const checkTime = new Date();

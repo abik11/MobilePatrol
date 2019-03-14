@@ -19,7 +19,7 @@
       mixins: [ErrorToastMixin, SMSMixin],
       data() {
          return {
-            checkingInterval: 10,
+            checkingInterval: 5,
             bgTaskHandler: null,
             bgMinuteTaskHandler: null
          };
@@ -33,22 +33,26 @@
             const minute = 60000;
 
             this.bgTaskHandler = setInterval(() => {
+               console.log("Sending reports");
                this.tasksToReport.forEach(task => {
                   this.sendSmsReport("task_list.task_undone", task.name);
-                  setTimeout(() => { }, 500);
-               });
+                  //setTimeout(() => {}, 200);
+               })
             }, this.checkingInterval * minute);
 
             this.bgMinuteTaskHandler = setInterval(() => {
                const checkTime = new Date();
+               console.log(`${checkTime.getHours()} ${checkTime.getMinutes()}`);
                if (checkTime.getHours() == 0 && checkTime.getMinutes() == 0) {
+                  console.log("Reseting task statuses");
                   this.undoneTasks.forEach(task => {
                      this.sendSmsReport("task_list.task_undone", task.name);
-                     setTimeout(() => { }, 500);
+                     //setTimeout(() => {}, 200);
                   });
                   this.$store.dispatch('tasks/resetTasksStatus', checkTime);
                }
             }, minute);
+
             console.log('Background task has started.');
          },
          endBgAction() {
