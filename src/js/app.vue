@@ -19,7 +19,7 @@
       mixins: [ErrorToastMixin, SMSMixin],
       data() {
          return {
-            checkingInterval: 5,
+            checkingInterval: 10,
             bgTaskHandler: null,
             bgMinuteTaskHandler: null
          };
@@ -36,7 +36,7 @@
                console.log("Sending reports");
                this.tasksToReport.forEach(task => {
                   this.sendSmsReport("task_list.task_undone", task.name);
-                  //setTimeout(() => {}, 200);
+                  setTimeout(() => {}, 200);
                })
             }, this.checkingInterval * minute);
 
@@ -47,7 +47,7 @@
                   console.log("Reseting task statuses");
                   this.undoneTasks.forEach(task => {
                      this.sendSmsReport("task_list.task_undone", task.name);
-                     //setTimeout(() => {}, 200);
+                     setTimeout(() => {}, 200);
                   });
                   this.$store.dispatch('tasks/resetTasksStatus', checkTime);
                }
