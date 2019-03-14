@@ -34,6 +34,7 @@
 
             this.bgTaskHandler = setInterval(() => {
                console.log("Sending reports");
+               cordova.plugins.backgroundMode.moveToForeground();
                this.tasksToReport.forEach(task => {
                   this.sendSmsReport("task_list.task_undone", task.name);
                   setTimeout(() => {}, 200);
@@ -42,9 +43,9 @@
 
             this.bgMinuteTaskHandler = setInterval(() => {
                const checkTime = new Date();
-               console.log(`${checkTime.getHours()} ${checkTime.getMinutes()}`);
                if (checkTime.getHours() == 0 && checkTime.getMinutes() == 0) {
                   console.log("Reseting task statuses");
+                  cordova.plugins.backgroundMode.moveToForeground();
                   this.undoneTasks.forEach(task => {
                      this.sendSmsReport("task_list.task_undone", task.name);
                      setTimeout(() => {}, 200);
