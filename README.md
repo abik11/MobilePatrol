@@ -1,5 +1,5 @@
 ﻿## MobilePatrol
-This is a project based on [this](https://github.com/abik11/vue-cordova).
+This is a project based on [this template](https://github.com/abik11/vue-cordova).
 
 ### Permissions
 If you will see the `User has denied permissions` error, than edit andoroid manifest here: `./platforms/android/AndroidManifest.xml` and add:
