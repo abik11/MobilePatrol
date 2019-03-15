@@ -12,10 +12,10 @@ import store from './store';
 import theme from './theme.js';
 //---
 import App from './app.vue';
-import Home from './components/home.vue';
-import Instruction from './components/instruction.vue';
-import Issue from './components/issue.vue';
-import Settings from './components/settings.vue';
+import Home from './views/home.vue';
+import Instruction from './views/instruction.vue';
+import Issue from './views/issue.vue';
+import Settings from './views/settings.vue';
 
 (function () {
    "use strict";

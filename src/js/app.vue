@@ -31,10 +31,10 @@
       methods: {
          startBgAction() {
             const minute = 60000;
+            powerManagement.dim();
 
             this.bgTaskHandler = setInterval(() => {
                console.log("Sending reports");
-               cordova.plugins.backgroundMode.moveToForeground();
                this.tasksToReport.forEach(task => {
                   this.sendSmsReport("task_list.task_undone", task.name);
                   setTimeout(() => {}, 200);
@@ -45,7 +45,6 @@
                const checkTime = new Date();
                if (checkTime.getHours() == 0 && checkTime.getMinutes() == 0) {
                   console.log("Reseting task statuses");
-                  cordova.plugins.backgroundMode.moveToForeground();
                   this.undoneTasks.forEach(task => {
                      this.sendSmsReport("task_list.task_undone", task.name);
                      setTimeout(() => {}, 200);
@@ -57,6 +56,7 @@
             console.log('Background task has started.');
          },
          endBgAction() {
+            powerManagement.setReleaseOnPause(false);
             clearInterval(this.bgTaskHandler);
             clearInterval(this.bgMinuteTaskHandler);
             cordova.plugins.backgroundMode.un('enable', this.startBgAction);
