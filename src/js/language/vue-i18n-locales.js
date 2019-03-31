@@ -36,7 +36,8 @@
       issue: {
          issue_question: 'Jesteś pewien, że chcesz zgłosić problem?',
          make_picture: 'Zrób zdjęcie',
-         issue_raport: 'Zgłoszenie problemu'
+         issue_raport: 'Zgłoszenie problemu',
+         describe_issue: 'Opisz problem'
       },
       settings: {
          phone: 'Numer telefonu do raportów SMS',

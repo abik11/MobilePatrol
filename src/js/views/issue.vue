@@ -18,8 +18,15 @@
                {{$t('common.send')}}
             </v-btn>
          </v-flex>
-         <v-flex xs12 text-xs-center>
+         <v-flex xs12 text-xs-center v-if="imageCaptured">
             <img class="img" :src="imageUri" />
+         </v-flex>
+         <v-flex xs12 text-xs-center v-if="imageCaptured">
+            <v-textarea outline
+                        auto-grow
+                        :label="$t('issue.describe_issue')"
+                        v-model="description">
+            </v-textarea>
          </v-flex>
       </v-layout>
    </transition>
@@ -36,6 +43,7 @@
       data: function () {
          return {
             imageUri: '',
+            description: '',
             imgPrefix: 'data:image/jpeg;base64,'
          }
       },
@@ -64,9 +72,13 @@
                return;
             }
 
-            var time = new Date().toLocaleTimeString();
-            var title = this.$i18n.t("issue.issue_raport");
-            var message = `${title}\n${this.name}\n${this.currentUser}\n${time}`;
+            const time = new Date().toLocaleTimeString();
+            const title = this.$i18n.t("issue.issue_raport");
+
+            if (this.description.length == 0)
+               var message = `${title}\n${this.name}\n${this.currentUser}\n${time}`;
+            else
+               var message = `${title}\n${this.name}\n${this.currentUser}\n${this.description}\n${time}`;
 
             this.getImageAsBase64()
                .then(imgBase64 => {
