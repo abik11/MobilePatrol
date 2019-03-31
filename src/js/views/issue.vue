@@ -32,6 +32,7 @@
    export default {
       name: 'issue',
       mixins: [ErrorToastMixin],
+      props: ['name'],
       data: function () {
          return {
             imageUri: '',
@@ -65,7 +66,7 @@
 
             var time = new Date().toLocaleTimeString();
             var title = this.$i18n.t("issue.issue_raport");
-            var message = `${title}\n${this.currentUser}\n${time}`;
+            var message = `${title}\n${this.name}\n${this.currentUser}\n${time}`;
 
             this.getImageAsBase64()
                .then(imgBase64 => {

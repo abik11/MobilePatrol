@@ -37,7 +37,7 @@ import Settings from './views/settings.vue';
          routes: [
             { path: '/', component: Home },
             { path: '/instruction', component: Instruction },
-            { path: '/issue', component: Issue },
+            { path: '/issue/:name', component: Issue, props: true },
             { path: '/settings', component: Settings }
          ]
       });

@@ -24,15 +24,6 @@
                      </v-list-tile>
                      <v-divider></v-divider>
 
-                     <router-link to="/issue">
-                        <v-list-tile>
-                           <v-list-tile-content>
-                              <v-list-tile-title>{{ $t('side_menu.raport_issue') }}</v-list-tile-title>
-                           </v-list-tile-content>
-                        </v-list-tile>
-                     </router-link>
-                     <v-divider></v-divider>
-
                      <router-link to="/instruction">
                         <v-list-tile>
                            <v-list-tile-content>
@@ -65,7 +56,7 @@
                      <template v-for="(task, index) in dailyTasks">
                         <v-divider v-if="index > 0" :key="-index"></v-divider>
                         <v-list-tile :key="index">
-                           <v-list-tile-content>
+                           <v-list-tile-content @click="issue(task)">
                               <strong><v-list-tile-title>{{ task.name }}</v-list-tile-title></strong>
                               <v-list-tile-sub-title>{{ task.time }}</v-list-tile-sub-title>
                            </v-list-tile-content>
@@ -140,6 +131,10 @@
          panic() {
             var sendPanic = confirm(this.$i18n.t("panic.panic_question"));
             if (sendPanic) this.sendSmsReport("panic.panic_send");
+         },
+         issue(task) {
+            var sendIssue = confirm(this.$i18n.t("issue.issue_question"));
+            if (sendIssue) this.$router.push(`/issue/${task.name}`);
          },
          onMessageSent() {
             this.toast = true;

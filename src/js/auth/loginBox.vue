@@ -36,7 +36,7 @@
 
 <script>
    import sha256 from './sha256';
-   import { mapState } from 'vuex';
+   import { mapState, mapMutations, mapActions } from 'vuex';
 
    export default {
       name: 'loginBox',

@@ -20,7 +20,6 @@
       },
       side_menu: {
          panic: 'Zgłoszenie alarmu',
-         raport_issue: 'Zgłoś problem',
          read_instructions: 'Przeczytaj instrukcje',
          settings: 'Ustawienia',
          logout: 'Wyloguj'
@@ -35,6 +34,7 @@
          panic_send: 'Zgłoszenie alarmu'
       },
       issue: {
+         issue_question: 'Jesteś pewien, że chcesz zgłosić problem?',
          make_picture: 'Zrób zdjęcie',
          issue_raport: 'Zgłoszenie problemu'
       },
