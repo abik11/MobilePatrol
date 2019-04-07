@@ -3,6 +3,9 @@
       <v-flex xs12>
          <form @submit.prevent="sendCredentials">
             <v-layout align-center justify-center column fill-height>
+               <v-flex xs12 mb-5 v-if="!secure">
+                  <img src="../../img/logo.png" />
+               </v-flex>
                <v-flex xs12 v-if="!secure">
                   <v-text-field color="primary"
                                 v-model="login" required
