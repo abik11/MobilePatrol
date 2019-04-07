@@ -1,8 +1,12 @@
 ﻿<template>
    <v-app>
+      <v-snackbar v-model="toast" right top :timeout="toastTimeout">
+         {{ feedback }}
+         <v-btn color="primary" flat @click="clearToast">{{ $t('common.close') }}</v-btn>
+      </v-snackbar>
       <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
          {{ error }}
-         <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
+         <v-btn color="secondary" flat @click="clearErrorToast">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
 
       <router-view></router-view>
@@ -10,13 +14,13 @@
 </template>
 
 <script>
-   import ErrorToastMixin from './core/errorToastMixin';
+   import ToastMixin from './core/toastMixin';
    import SMSMixin from './core/smsMixin';
-   import { mapGetters } from 'vuex';
+   import { mapGetters, mapMutations, mapActions } from 'vuex';
 
    export default {
       name: 'app',
-      mixins: [ErrorToastMixin, SMSMixin],
+      mixins: [ToastMixin, SMSMixin],
       data() {
          return {
             checkingInterval: 10,
@@ -29,6 +33,11 @@
          undoneTasks: 'tasks/undoneTasks'
       }),
       methods: {
+         ...mapMutations(['readInitialSettings']),
+         ...mapActions({
+            resetTasksStatus: 'tasks/resetTasksStatus',
+            readInitialTasks: 'tasks/readInitialTasks'
+         }),
          startBgAction() {
             const minute = 60000;
             powerManagement.dim();
@@ -37,7 +46,7 @@
                console.log("Sending reports");
                this.tasksToReport.forEach(task => {
                   this.sendSmsReport("task_list.task_undone", task.name);
-                  setTimeout(() => {}, 200);
+                  setTimeout(() => { }, 200);
                })
             }, this.checkingInterval * minute);
 
@@ -47,9 +56,9 @@
                   console.log("Reseting task statuses");
                   this.undoneTasks.forEach(task => {
                      this.sendSmsReport("task_list.task_undone", task.name);
-                     setTimeout(() => {}, 200);
+                     setTimeout(() => { }, 200);
                   });
-                  this.$store.dispatch('tasks/resetTasksStatus', checkTime);
+                  this.resetTasksStatus(checkTime);
                }
             }, minute);
 
@@ -65,8 +74,8 @@
          }
       },
       created() {
-         this.$store.commit('readInitialSettings');
-         this.$store.dispatch('tasks/readInitialTasks');
+         this.readInitialSettings();
+         this.readInitialTasks();
       },
       mounted() {
          cordova.plugins.backgroundMode.enable();

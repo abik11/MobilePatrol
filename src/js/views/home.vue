@@ -4,16 +4,6 @@
          <transition name="slide" mode="out-in">
             <login-box v-if="!loggedIn" class="login-box full" @login="onUserLoggedin" />
             <v-layout v-else row>
-
-               <v-snackbar v-model="toast" right top :timeout="toastTimeout">
-                  {{ $t('common.sms_confirmation_send') }}
-                  <v-btn color="primary" flat @click="toast = false">{{ $t('common.close') }}</v-btn>
-               </v-snackbar>
-               <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
-                  {{ error }}
-                  <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
-               </v-snackbar>
-
                <v-navigation-drawer v-model="nav" dark temporary fixed width="220">
                   <v-list class="pt-0">
 
@@ -95,20 +85,17 @@
 </template>
 
 <script>
-   import ErrorToastMixin from '../core/errorToastMixin';
    import SMSMixin from '../core/smsMixin';
    import LoginBox from '../auth/loginBox.vue';
-   import { mapState, mapGetters } from 'vuex';
+   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 
    export default {
       name: 'home',
       components: { LoginBox },
-      mixins: [ErrorToastMixin, SMSMixin],
+      mixins: [SMSMixin],
       data() {
          return {
-            nav: false,
-            toast: false,
-            toastTimeout: 2000
+            nav: false
          }
       },
       computed: {
@@ -121,11 +108,18 @@
          ])
       },
       methods: {
+         ...mapMutations({
+            setCurrentUser: 'setCurrentUser',
+            setFeedback: 'messages/setFeedback'
+         }),
+         ...mapActions({
+            setTaskStatus: 'tasks/setTaskStatus'
+         }),
          taskDone(task) {
             var taskDone = confirm(this.$i18n.t("task_list.task_done_question"));
             if (taskDone) {
                this.sendSmsReport("task_list.task_done", task.name);
-               this.$store.dispatch('tasks/setTaskStatus', { task, status: 'done' });
+               this.setTaskStatus({ task, status: 'done' });
             }
          },
          panic() {
@@ -137,22 +131,18 @@
             if (sendIssue) this.$router.push(`/issue/${task.name}`);
          },
          onMessageSent() {
-            this.toast = true;
+            this.setFeedback(this.$i18n.t('common.sms_confirmation_send'));
             console.log("SMS has been sent");
          },
          onUserLoggedin(userName) {
-            this.$store.commit('setCurrentUser', userName);
+            this.setCurrentUser(userName);
          },
          onUserLogout() {
             this.nav = false;
-            this.$store.commit('setCurrentUser', '');
+            this.setCurrentUser('');
          }
       }
    }
-   /*
-      todo:
-      - add dexie ?
-   */
 </script>
 
 <style lang="scss" scoped>

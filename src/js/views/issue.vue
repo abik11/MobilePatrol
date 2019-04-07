@@ -1,11 +1,6 @@
 ﻿<template>
    <transition name="fade" mode="out-in">
       <v-layout row wrap>
-         <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
-            {{ error }}
-            <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
-         </v-snackbar>
-
          <v-flex xs6 text-xs-left>
             <v-btn outline color="primary" @click="captureImage">
                <v-icon>photo_camera</v-icon>
@@ -33,12 +28,10 @@
 </template>
 
 <script>
-   import ErrorToastMixin from '../core/errorToastMixin';
-   import { mapState } from 'vuex';
+   import { mapState, mapMutations } from 'vuex';
 
    export default {
       name: 'issue',
-      mixins: [ErrorToastMixin],
       props: ['name'],
       data: function () {
          return {
@@ -57,6 +50,9 @@
          }
       },
       methods: {
+         ...mapMutations({
+            setError: 'messages/setError'
+         }),
          captureImage() {
             this.$device.getPicture(imageUri => this.imageUri = imageUri);
          },
@@ -68,7 +64,7 @@
          },
          sendImage() {
             if (this.reportNumber.length == 0) {
-               this.error = this.$i18n.t('common.report_number_error');
+               this.setError(this.$i18n.t('common.report_number_error'));
                return;
             }
 
@@ -87,7 +83,7 @@
                      message,
                      `${this.imgPrefix}${imgBase64}`,
                      this.onPictureSent,
-                     this.basicErrorHandler,
+                     this.setError,
                      'INTENT'
                   );
                });

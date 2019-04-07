@@ -1,4 +1,4 @@
-﻿import { mapState } from 'vuex';
+﻿import { mapState, mapMutations } from 'vuex';
 
 var SMSMixin = {
    computed: mapState([
@@ -6,9 +6,12 @@ var SMSMixin = {
       'currentUser'
    ]),
    methods: {
+      ...mapMutations({
+         setError: 'messages/setError'
+      }),
       sendSmsReport(titleStringName, optionalContent) {
          if (this.reportNumber.length == 0) {
-            this.error = this.$i18n.t('common.report_number_error');
+            this.setError(this.$i18n.t('common.report_number_error'));
             return;
          }
 
@@ -21,9 +24,7 @@ var SMSMixin = {
          }
 
          var message = `${title}\n${this.currentUser}\n${time}${separator}${optionalContent}`;
-
-         this.$device.sendSms
-            (this.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
+         this.$device.sendSms(this.reportNumber, message, this.onMessageSent, this.setError);
       }
    }
 };

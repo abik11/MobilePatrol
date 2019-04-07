@@ -1,15 +1,6 @@
 ﻿<template>
    <transition name="fade" mode="out-in">
       <v-layout row class="footer-spacer">
-         <v-snackbar v-model="toast" right top :timeout="toastTimeout">
-            {{ $t('common.saved') }}
-            <v-btn color="primary" flat @click="toast = false">{{ $t('common.close') }}</v-btn>
-         </v-snackbar>
-         <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
-            {{ error }}
-            <v-btn color="secondary" flat @click="clearError">{{ $t('common.close') }}</v-btn>
-         </v-snackbar>
-
          <v-dialog v-model="dialog" max-width="280px">
             <v-card>
                <v-card-text>
@@ -91,19 +82,15 @@
 </template>
 
 <script>
-   import ErrorToastMixin from '../core/errorToastMixin';
    import LoginBox from '../auth/loginBox.vue';
    import PasswordBox from '../auth/passwordBox.vue';
-   import { mapState, mapGetters } from 'vuex';
+   import { mapState, mapGetters, mapMutations, mapActions } from 'vuex';
 
    export default {
       name: 'settings',
       components: { LoginBox, PasswordBox },
-      mixins: [ErrorToastMixin],
       data() {
          return {
-            toast: false,
-            toastTimeout: 2000,
             dialog: false,
             tmpReportNumber: '',
             tmpDailyTasks: [],
@@ -123,15 +110,24 @@
          ...mapGetters(['passwordSet'])
       },
       methods: {
+         ...mapMutations({
+            setSettingsPassword: 'setSettingsPassword',
+            setFeedback: 'messages/setFeedback',
+            setError: 'messages/setError'
+         }),
+         ...mapActions({
+            setReportNumber: 'setReportNumber',
+            setDailyTasks: 'tasks/setDailyTasks'
+         }),
          onUserAuthorize(password) {
             if (password == this.settingsPassword)
                this.authorized = true;
             else
-               this.error = this.$i18n.t('login.wrong_password');
+               this.setError(this.$i18n.t('login.wrong_password'));
          },
          resetPassword() {
             this.authorized = '';
-            this.$store.commit('setSettingsPassword', '');
+            this.setSettingsPassword('');
          },
          addTask() {
             this.editMode = 'add';
@@ -161,7 +157,7 @@
                   this.dialog = false;
                }
                else {
-                  this.error = this.$i18n.t('settings.adding_task_error');
+                  this.setError(this.$i18n.t('settings.adding_task_error'));
                }
             }
             else if (this.editMode == 'edit') {
@@ -173,14 +169,14 @@
                   this.dialog = false;
                }
                else {
-                  this.error = this.$i18n.t('settings.editing_task_error');
+                  this.setError(this.$i18n.t('settings.editing_task_error'));
                }
             }
          },
          saveSettings() {
-            this.$store.dispatch('setReportNumber', this.tmpReportNumber);
-            this.$store.dispatch('tasks/setDailyTasks', this.tmpDailyTasks);
-            this.toast = true;
+            this.setReportNumber(this.tmpReportNumber);
+            this.setDailyTasks(this.tmpDailyTasks);
+            this.setFeedback(this.$i18n.t('common.saved'));
          }
       },
       created() {

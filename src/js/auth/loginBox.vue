@@ -67,12 +67,17 @@
          }
       },
       methods: {
+         ...mapMutations({
+            setSettingsPassword: 'setSettingsPassword',
+            setError: 'messages/setError'
+         }),
+         ...mapActions(['setSettingsPassword']),
          sendCredentials() {
             this.$emit('login', this.credentials);
          },
          resetPassword() {
             if (this.reportNumber == '')
-               this.$store.commit('setSettingsPassword', '')
+               this.setSettingsPassword('');
             else {
                var title = this.$i18n.t('login.new_password');
                var time = new Date().toLocaleTimeString();
@@ -80,9 +85,9 @@
                var message = `${title}\n${this.currentUser}\n${time}\n${newPassword}`;
 
                this.$device.sendSms
-                  (this.reportNumber, message, this.onMessageSent, this.basicErrorHandler);
+                  (this.reportNumber, message, this.onMessageSent, this.setError);
 
-               this.$store.dispatch('setSettingsPassword', sha256(newPassword));
+               this.setSettingsPassword(sha256(newPassword));
             }
          },
          generateRandomPassword(passwordLength) {
