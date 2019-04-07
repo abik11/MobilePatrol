@@ -1,12 +1,12 @@
 ﻿<template>
    <v-app>
-      <v-snackbar v-model="toast" right top :timeout="toastTimeout">
+      <v-snackbar v-model="toast" color="primary" right top :timeout="toastTimeout">
          {{ feedback }}
-         <v-btn color="primary" flat @click="clearToast">{{ $t('common.close') }}</v-btn>
+         <v-btn color="white" flat @click="clearToast">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
       <v-snackbar v-model="errorToast" color="error" right top :timeout="errorToastTimeout">
          {{ error }}
-         <v-btn color="secondary" flat @click="clearErrorToast">{{ $t('common.close') }}</v-btn>
+         <v-btn color="black" flat @click="clearErrorToast">{{ $t('common.close') }}</v-btn>
       </v-snackbar>
 
       <router-view></router-view>

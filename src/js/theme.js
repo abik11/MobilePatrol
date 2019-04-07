@@ -1,8 +1,8 @@
-﻿import colors from 'vuetify/es5/util/colors'
+﻿import colors from 'vuetify/es5/util/colors';
 
 export default {
-   primary: colors.orange.darken4,
-   secondary: colors.grey.darken4,
-   error: colors.red.darken4,
-   success: colors.lightGreen.accent4
-}
+   primary: '#047d36', //green
+   secondary: '#e15100', //orange
+   error: '#e30713', //red
+   success: '#6ab645' //lime-green
+};

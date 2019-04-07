@@ -50,10 +50,10 @@
                               <v-list-tile-sub-title>{{ task.time }}</v-list-tile-sub-title>
                            </v-list-tile-content>
                            <v-spacer></v-spacer>
-                           <v-btn color="primary" outline fab @click="editTask(task)">
+                           <v-btn color="secondary" outline fab @click="editTask(task)">
                               <v-icon>edit</v-icon>
                            </v-btn>
-                           <v-btn color="primary" outline fab @click="tmpDailyTasks.splice(index, 1)">
+                           <v-btn color="error" outline fab @click="tmpDailyTasks.splice(index, 1)">
                               <v-icon>close</v-icon>
                            </v-btn>
                         </v-list-tile>

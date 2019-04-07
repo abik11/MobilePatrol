@@ -21,12 +21,12 @@
                   </v-text-field>
                </v-flex>
                <v-flex xs12 mt-5>
-                  <v-btn outline large fab @click="sendCredentials">
+                  <v-btn outline large fab color="error" @click="sendCredentials">
                      <v-icon>play_arrow</v-icon>
                   </v-btn>
                </v-flex>
                <v-flex v-if="secure" xs12 mt-5>
-                  <v-btn flat @click="resetPassword">{{ $t('login.reset_password') }}</v-btn>
+                  <v-btn flat color="error" @click="resetPassword">{{ $t('login.reset_password') }}</v-btn>
                </v-flex>
             </v-layout>
          </form>

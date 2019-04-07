@@ -47,13 +47,19 @@
                         <v-divider v-if="index > 0" :key="-index"></v-divider>
                         <v-list-tile :key="index">
                            <v-list-tile-content @click="issue(task)">
-                              <strong><v-list-tile-title>{{ task.name }}</v-list-tile-title></strong>
-                              <v-list-tile-sub-title>{{ task.time }}</v-list-tile-sub-title>
+                              <strong>
+                                 <v-list-tile-title>
+                                    {{ task.name }}
+                                 </v-list-tile-title>
+                              </strong>
+                              <v-list-tile-sub-title>
+                                 {{ task.time }}
+                              </v-list-tile-sub-title>
                            </v-list-tile-content>
                            <v-spacer></v-spacer>
                            <transition name="bounce" mode="out-in">
                               <v-btn v-if="task.status == 'undone'" @click="taskDone(task)"
-                                     color="primary" outline fab>
+                                     color="error" outline fab>
                                  <v-icon>check</v-icon>
                               </v-btn>
                               <v-icon v-else class="px-4" color="success">check</v-icon>
@@ -64,14 +70,14 @@
                </v-flex>
 
                <v-footer fixed height="auto">
-                  <v-card flat tile color="secondary" style="width: 100%;">
+                  <v-card flat tile color="primary" style="width: 100%;">
                      <v-layout align-center justify-center fill-height>
                         <v-flex xs3>
-                           <v-btn color="primary" fab dark @click.stop="nav = !nav">
+                           <v-btn color="success" fab dark @click.stop="nav = !nav">
                               <v-icon>menu</v-icon>
                            </v-btn>
                         </v-flex>
-                        <v-flex xs9 pr-4 class="grey--text text--darken-1 text-xs-right text-truncate">
+                        <v-flex xs9 pr-4 class="text-xs-right text-truncate green--text text--lighten-1">
                            {{$t('login.logged_as')}}: {{currentUser}}
                         </v-flex>
                      </v-layout>
@@ -149,5 +155,9 @@
    .v-list a {
       text-decoration: none;
       color: white;
+   }
+
+   .v-navigation-drawer {
+      background-color: var(--v-primary-base);
    }
 </style>
