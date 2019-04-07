@@ -7,3 +7,6 @@ If you will see the `User has denied permissions` error, than edit andoroid mani
 <uses-permission android:name="android.permission.SEND_SMS" />
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 ```
+
+### Logo
+Remember to add `logo.png` in `src\img` that will be displayed in login box.
