@@ -13,6 +13,13 @@
                         <v-time-picker v-model="taskTime" color="primary" format="24hr" width="220">
                         </v-time-picker>
                      </v-flex>
+                     <v-flex xs12>
+                        <v-text-field v-model="taskUser" 
+                                      :label="$t('settings.task_user')"
+                                      :append-icon="person"
+                                      @click:append="addCurrentUserName">
+                        </v-text-field>
+                     </v-flex>
                   </v-layout>
                </v-card-text>
                <v-card-actions>
@@ -47,7 +54,7 @@
                         <v-list-tile :key="index">
                            <v-list-tile-content>
                               <strong><v-list-tile-title>{{ task.name }}</v-list-tile-title></strong>
-                              <v-list-tile-sub-title>{{ task.time }}</v-list-tile-sub-title>
+                              <v-list-tile-sub-title>{{ task.time }} {{ task.user }}</v-list-tile-sub-title>
                            </v-list-tile-content>
                            <v-spacer></v-spacer>
                            <v-btn color="secondary" outline fab @click="editTask(task)">
@@ -97,6 +104,7 @@
             taskName: '',
             taskTime: null,
             taskId: 0,
+            taskUser: '',
             editMode: '',
             authorized: false
          }
@@ -105,7 +113,8 @@
          ...mapState({
             dailyTasks: state => state.tasks.dailyTasks,
             settingsPassword: state => state.settingsPassword,
-            reportNumber: state => state.reportNumber
+            reportNumber: state => state.reportNumber,
+            currentUser: state => state.currentUser
          }),
          ...mapGetters(['passwordSet'])
       },
@@ -135,6 +144,7 @@
             this.taskTime = '00:00';
             var task = _.maxBy(this.tmpDailyTasks, 'id');
             this.taskId = task ? task.id + 1 : 0;
+            this.taskUser = '';
             this.dialog = true;
          },
          editTask(task) {
@@ -142,6 +152,7 @@
             this.taskName = task.name;
             this.taskTime = task.time;
             this.taskId = task.id;
+            this.taskUser = task.user;
             this.dialog = true;
          },
          saveTasks() {
@@ -151,7 +162,8 @@
                      name: this.taskName,
                      time: this.taskTime,
                      id: this.taskId,
-                     status: 'undone'
+                     status: 'undone',
+                     user: this.taskUser
                   });
                   this.tmpDailyTasks = _.orderBy(this.tmpDailyTasks, 'time');
                   this.dialog = false;
@@ -165,6 +177,7 @@
                   var editedTask = _.find(this.tmpDailyTasks, ['id', this.taskId]);
                   editedTask.name = this.taskName;
                   editedTask.time = this.taskTime;
+                  editedTask.user = this.taskUser;
                   this.tmpDailyTasks = _.orderBy(this.tmpDailyTasks, 'time');
                   this.dialog = false;
                }
@@ -177,6 +190,9 @@
             this.setReportNumber(this.tmpReportNumber);
             this.setDailyTasks(this.tmpDailyTasks);
             this.setFeedback(this.$i18n.t('common.saved'));
+         },
+         addCurrentUserName() {
+            this.taskUser = this.currentUser;
          }
       },
       created() {

@@ -21,7 +21,7 @@
                   </v-text-field>
                </v-flex>
                <v-flex xs12 mt-5>
-                  <v-btn outline large fab @click="savePassword">
+                  <v-btn outline large color="error" fab @click="savePassword">
                      <v-icon>play_arrow</v-icon>
                   </v-btn>
                </v-flex>

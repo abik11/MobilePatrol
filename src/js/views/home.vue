@@ -43,7 +43,7 @@
 
                <v-flex xs12>
                   <v-list two-line>
-                     <template v-for="(task, index) in dailyTasks">
+                     <template v-for="(task, index) in currentUserTasks">
                         <v-divider v-if="index > 0" :key="-index"></v-divider>
                         <v-list-tile :key="index">
                            <v-list-tile-content @click="issue(task)">
@@ -106,12 +106,12 @@
       },
       computed: {
          ...mapState({
-            dailyTasks: state => state.tasks.dailyTasks,
             currentUser: state => state.currentUser
          }),
-         ...mapGetters([
-            'loggedIn'
-         ])
+         ...mapGetters({
+            currentUserTasks: 'tasks/currentUserTasks',
+            loggedIn: 'loggedIn'
+         })
       },
       methods: {
          ...mapMutations({

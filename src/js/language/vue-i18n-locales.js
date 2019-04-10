@@ -42,6 +42,7 @@
       settings: {
          phone: 'Numer telefonu do raportów SMS',
          task_name: 'Nazwa zadania',
+         task_user: 'Nazwa użytkownika (prywatne zadanie)',
          adding_task_error: 'Nie udało dodać się nowego zadania',
          editing_task_error: 'Nie udało dodać się zmienić zadania',
          change_pass: 'Zmień hasło'

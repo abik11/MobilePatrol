@@ -2,20 +2,25 @@
    namespaced: true,
    state: {
       dailyTasks: [
-         { name: 'Sprwadź punkt numer 1', time: '18:00', id: 1, status: 'undone' },
-         { name: 'Sprwadź punkt numer 2', time: '18:05', id: 2, status: 'undone' },
-         { name: 'Sprwadź punkt numer 3', time: '18:15', id: 3, status: 'undone' }
+         { name: 'Sprwadź punkt numer 1', time: '18:00', id: 1, status: 'undone', user: '' },
+         { name: 'Sprwadź punkt numer 2', time: '18:05', id: 2, status: 'undone', user: '' },
+         { name: 'Sprwadź punkt numer 3 A', time: '18:15', id: 3, status: 'undone', user: 'A' },
+         { name: 'Sprwadź punkt numer 3 B', time: '18:20', id: 4, status: 'undone', user: 'B' }
       ]
    },
    getters: {
-      undoneTasks: state => {
-         return state.dailyTasks.filter(task => task.status == 'undone');
+      currentUserTasks: (state, getters, rootState) => {
+         console.log(rootState.messages.test);
+         return state.dailyTasks.filter(task => task.user == '' || task.user == rootState.currentUser);
       },
-      tasksToReport: state => {
+      undoneTasks: (state, getters) => {
+         return getters.currentUserTasks.filter(task => task.status == 'undone');
+      },
+      tasksToReport: (state, getters) => {
          const checkTime = new Date();
          const lastCheck = `${checkTime.getHours()}:${checkTime.getMinutes()}`;
 
-         return state.dailyTasks.filter
+         return getters.currentUserTasks.filter
             (task => task.time < lastCheck && task.status == 'undone');
       }
    },
