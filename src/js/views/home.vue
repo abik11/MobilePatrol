@@ -124,21 +124,17 @@
          taskDone(task) {
             var taskDone = confirm(this.$i18n.t("task_list.task_done_question"));
             if (taskDone) {
-               this.sendSmsReport("task_list.task_done", task.name);
+               this.sendSmsReport('task_list.task_done', task.name, 'common.sms_confirmation_send');
                this.setTaskStatus({ task, status: 'done' });
             }
          },
          panic() {
-            var sendPanic = confirm(this.$i18n.t("panic.panic_question"));
-            if (sendPanic) this.sendSmsReport("panic.panic_send");
+            var sendPanic = confirm(this.$i18n.t('panic.panic_question'));
+            if (sendPanic) this.sendSmsReport('panic.panic_send', '', 'common.sms_confirmation_send');
          },
          issue(task) {
-            var sendIssue = confirm(this.$i18n.t("issue.issue_question"));
+            var sendIssue = confirm(this.$i18n.t('issue.issue_question'));
             if (sendIssue) this.$router.push(`/issue/${task.name}`);
-         },
-         onMessageSent() {
-            this.setFeedback(this.$i18n.t('common.sms_confirmation_send'));
-            console.log("SMS has been sent");
          },
          onUserLoggedin(userName) {
             this.setCurrentUser(userName);
