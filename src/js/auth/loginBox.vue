@@ -3,6 +3,9 @@
       <v-flex xs12>
          <form @submit.prevent="sendCredentials">
             <v-layout align-center justify-center column fill-height>
+               <v-flex xs12 v-if="!secure">
+                  <img class="hero" src="../../img/hero.jpg" />
+               </v-flex>
                <v-flex xs12 mb-5 v-if="!secure">
                   <img src="../../img/logo.png" />
                </v-flex>
@@ -105,3 +108,10 @@
       }
    }
 </script>
+
+<style lang="scss" scoped>
+   .hero {
+      clip-path: ellipse(100% 50% at 50% 50%);
+      max-width: 100%;
+   }
+</style>

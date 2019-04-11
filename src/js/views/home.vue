@@ -8,8 +8,8 @@
                   <v-toolbar color="success" flat>
                      <v-list>
                         <v-list-tile>
-                           <v-list-tile-title class="title">
-                              <img src="../../img/logo.png" />
+                           <v-list-tile-title class="title text-xs-center">
+                              <img class="nav-logo" src="../../img/logo.png" />
                            </v-list-tile-title>
                         </v-list-tile>
                      </v-list>
@@ -163,5 +163,9 @@
 
    .v-navigation-drawer {
       background-color: var(--v-primary-base);
+   }
+
+   .nav-logo {
+      max-height: 24px;
    }
 </style>

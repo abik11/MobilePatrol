@@ -9,4 +9,4 @@ If you will see the `User has denied permissions` error, than edit andoroid mani
 ```
 
 ### Logo
-Remember to add `logo.png` in `src\img` that will be displayed in login box.
+Remember to add `logo.png` and `hero.jpg` in `src\img` that will be displayed in login box.

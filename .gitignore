@@ -15,3 +15,5 @@
 package-lock.json
 vue-cordova.jsproj.user
 stats.json
+/src/img/logo.png
+/src/img/hero.jpg
