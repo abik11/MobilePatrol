@@ -16,7 +16,7 @@
                      <v-flex xs12>
                         <v-text-field v-model="taskUser" 
                                       :label="$t('settings.task_user')"
-                                      :append-icon="person"
+                                      append-icon="account_circle"
                                       @click:append="addCurrentUserName">
                         </v-text-field>
                      </v-flex>
