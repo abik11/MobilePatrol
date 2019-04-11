@@ -5,8 +5,17 @@
             <login-box v-if="!loggedIn" class="login-box full" @login="onUserLoggedin" />
             <v-layout v-else row>
                <v-navigation-drawer v-model="nav" dark temporary fixed width="220">
+                  <v-toolbar color="success" flat>
+                     <v-list>
+                        <v-list-tile>
+                           <v-list-tile-title class="title">
+                              <img src="../../img/logo.png" />
+                           </v-list-tile-title>
+                        </v-list-tile>
+                     </v-list>
+                  </v-toolbar>
+                  <v-divider></v-divider>
                   <v-list class="pt-0">
-
                      <v-list-tile @click="panic">
                         <v-list-tile-content>
                            <v-list-tile-title>{{ $t('side_menu.panic') }}</v-list-tile-title>
@@ -37,7 +46,6 @@
                            <v-list-tile-title>{{ $t('side_menu.logout') }}</v-list-tile-title>
                         </v-list-tile-content>
                      </v-list-tile>
-
                   </v-list>
                </v-navigation-drawer>
 
