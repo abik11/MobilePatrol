@@ -6,7 +6,7 @@
                <v-flex xs12 v-if="!secure">
                   <img class="hero" src="../../img/hero.jpg" />
                </v-flex>
-               <v-flex xs12 mb-5 v-if="!secure">
+               <v-flex xs12 mb-4 v-if="!secure">
                   <img src="../../img/logo.png" />
                </v-flex>
                <v-flex xs12 v-if="!secure">
@@ -26,7 +26,7 @@
                                 @click:append="show = !show">
                   </v-text-field>
                </v-flex>
-               <v-flex xs12 mt-5>
+               <v-flex xs12 mt-4 mb-4>
                   <v-btn outline large fab color="error" @click="sendCredentials">
                      <v-icon>play_arrow</v-icon>
                   </v-btn>
