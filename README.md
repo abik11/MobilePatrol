@@ -8,5 +8,6 @@ If you will see the `User has denied permissions` error, than edit andoroid mani
 <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 ```
 
-### Logo
-Remember to add `logo.png` and `hero.jpg` in `src\img` that will be displayed in login box.
+### Images used
+https://pixabay.com/es/photos/logro-acuerdo-armas-negocio-3470201/
+https://pixabay.com/es/photos/de-primeros-auxilios-de-rescate-850489/
